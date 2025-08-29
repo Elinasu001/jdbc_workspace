@@ -21,7 +21,7 @@ public class InsertRun {
 		int empId = sc.nextInt();
 		sc.nextLine();
 		
-		System.out.print("직원을 입력해주세요 > ");
+		System.out.print("직원명을 입력해주세요 > ");
 		String empName = sc.nextLine();
 		
 		System.out.print("주민등록번호를 입력해주세요 > ");
@@ -100,7 +100,7 @@ public class InsertRun {
 		          + jobCode + 
 		     ",'" + salLevel + "',"
 		          + salary +
-		     ",'" + bonus + "',"
+		     "," + bonus + ","
 		          + "SYSDATE" +
 		          ")";
 		
