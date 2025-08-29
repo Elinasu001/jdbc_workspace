@@ -10,6 +10,7 @@ public class TestRun {
 
 	public static void main(String[] args) {
 		//JDBC 맛보기
+		
 		/*
 		 * 1. 디비버 실행(클라이언트 프로그램 실행) == 재생버튼 누르기
 		 * 
