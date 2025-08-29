@@ -47,62 +47,26 @@ public class InsertRun {
 		sc.nextLine();
 		
 		System.out.print("보너스율을 입력해주세요 > ");
-		double bonus = sc.nextInt();
+		double bonus = sc.nextDouble();
 		sc.nextLine();
 		
-		System.out.print("입사일을 입력해주세요 > ");
-		String hireDate = sc.nextLine();
+		System.out.print("입사일을 입력해주세요(YYYY-MM-DD) > ");
+		String hireDate  = sc.nextLine();
 		
-		String sql = """
-						INSERT
-						  INTO
-						       EMPLOYEE
-						       (
-						       EMP_ID
-						     , EMP_NAME
-						     , EMP_NO
-						     , EMAIL
-						     , PHONE
-						     , DEPT_CODE
-						     , JOB_CODE
-						     , SAL_LEVEL
-						     , SALARY
-						     , BONUS
-						     , HIRE_DATE
-						       )
-					    VALUES
-						  	   (
-						  	   SEO_EID.NEXTVAL
-						  	 , '홍길동
-						  	 , '631010-2653546'  
-						  	 , 'kth04@kh.or.kr'
-						  	 , '01077607879'
-						  	 , 'D9'
-						  	 , 'J5'
-						  	 , 'S4'
-						  	 , 5000000
-						  	 , 100
-						  	 , SYSDATE
-						  	   )
-					 """;
-		
-		sql = "INSERT "
-			  + "INTO "
-			  	   + "EMPLOYEE "
-			+ "VALUES"
-				  + "(" 
-				  + empId + 
-			 ",'" + empName + "'," 
-				  + empNo + 
-		     ",'" + email + "',"
-		      	  + phone + 
-		     ",'" + deptCode + "',"
-		          + jobCode + 
-		     ",'" + salLevel + "',"
-		          + salary +
-		     "," + bonus + ","
-		          + "SYSDATE" +
-		          ")";
+		 String sql = "INSERT INTO EMPLOYEE "
+	                + "(EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, DEPT_CODE, JOB_CODE, SAL_LEVEL, SALARY, BONUS, HIRE_DATE) "
+	                + "VALUES "
+	                + "(" + empId + ", "
+	                + "'" + empName + "', "
+	                + "'" + empNo + "', "
+	                + "'" + email + "', "
+	                + "'" + phone + "', "
+	                + "'" + deptCode + "', "
+	                + "'" + jobCode + "', "
+	                + "'" + salLevel + "', "
+	                + salary + ", "
+	                + bonus + ", "
+	                + "TO_DATE('" + hireDate + "', 'YYYY-MM-DD'))";
 		
 		
 		try {
@@ -112,6 +76,7 @@ public class InsertRun {
 			// 2) db서버와의 연결
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
 			System.out.println("DB서버 접속 성공!");
+			conn.setAutoCommit(false);
 			
 			//3) 새 sql 편집기 열기
 			stmt = conn.createStatement();
@@ -133,8 +98,9 @@ public class InsertRun {
 			e.printStackTrace();
 		} finally {
 			try {
-				stmt.close();
-				conn.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+				sc.close();
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
