@@ -88,8 +88,17 @@ public class TestRun {
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			// 무조건 1)행
+			System.out.println("문제1) jdbc에다가 ojdbc파일 추가 안했을 경우 -> 1)행"); // 프로젝트에 OJDBC 추가했나요?
+			System.out.println("문제2) 오타일 경우 -> 1)행");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			// 무조건 2)행
+			System.out.println("문제1) 사용자이름/비밀번호가 잘못되었습니다. -> 2)행");
+			System.out.println("문제2) 부적합한 Oracle URL지정되었습니다. -> 2)행");
+			System.out.println("문제3) SQLSyntaxErrorException -> SQL문 확인하기");
+			System.out.println("문제4) NullpointInputException -> JDBC객체들 확인하기");
 		} finally {
 			try {
 				stmt.close();
@@ -98,10 +107,7 @@ public class TestRun {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
-
 	}
+	// dao 푼 버전
 
 }
