@@ -14,8 +14,8 @@ JDBC 학습하며 점진적으로 실력을 향상시키는 것을 목표로 합
 ---
 🛠 개발 환경
 JAVA
-AWS JDK 2021 (msi download)
-Eclipse 2024.06 (other releaes)
-SQL
-Oracle Database 18c
+- AWS JDK 2021 (msi download)
+- Eclipse 2024.06 (other releaes)
+DATABASE
+- Oracle Database 18c
 
