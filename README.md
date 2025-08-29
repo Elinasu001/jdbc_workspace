@@ -12,6 +12,9 @@ JDBC 학습하며 점진적으로 실력을 향상시키는 것을 목표로 합
 ---
 JDBC
 JAVA + [DATABASE(JDBC를 위한 DATABASE GITHUB 링크)](https://github.com/Elinasu001/sql_jdbc.git)
+<img width="804" height="909" alt="jdbc_procedure_v2" src="https://github.com/user-attachments/assets/932e28ec-36cc-4313-ad46-2a6a93d22313" />
+
+
 
 
 ---
