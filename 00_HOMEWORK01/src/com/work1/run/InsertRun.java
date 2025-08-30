@@ -93,7 +93,6 @@ public class InsertRun {
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("문제1) jdbc에다가 ojdbc파일 추가 안했을 경우 -> 1)행"); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
