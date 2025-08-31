@@ -31,7 +31,10 @@ public class SelectRun {
 			System.out.println("DB서버 접속 성공!");
 			
 			stmt = conn.createStatement();
+			System.out.println("객체 생성 완료!");
+			
 			rset = stmt.executeQuery(sql);
+			System.out.println("sql 실행 완료!");
 			
 			while(rset.next()) {
 				String name = rset.getString("PLANT_NAME");
