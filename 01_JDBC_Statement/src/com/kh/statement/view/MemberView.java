@@ -40,7 +40,7 @@ public class MemberView {
 			case 1 : save(); break;
 			case 2 : findAll(); break;
 			case 3 : findById(); break;
-			case 4 : break;
+			case 4 : findByKeyword(); break;
 			case 5 : break;
 			case 6 : break;
 			case 9 : System.out.println("프로그램을 종료합니다."); return;
@@ -109,11 +109,11 @@ public class MemberView {
 			members.stream().forEach(member -> {
 			    System.out.println("===============================");
 			    System.out.println(member.getUserNo() + "번 회원의 정보");
-			    System.out.println("아이디 : " + member.getUserId() + ",");
-			    System.out.println("비밀번호 : " + member.getUserPwd() + ",");
-			    System.out.println("이름 : " + member.getUserName() + ",");
-			    System.out.println("이메일 : " + member.getEmail() + ",");
-			    System.out.println("가입일 : " + member.getEnrollDate());
+			    System.out.print("아이디 : " + member.getUserId() + ",");
+			    System.out.print("비밀번호 : " + member.getUserPwd() + ",");
+			    System.out.print("이름 : " + member.getUserName() + ",");
+			    System.out.print("이메일 : " + member.getEmail() + ",");
+			    System.out.print("가입일 : " + member.getEnrollDate());
 			    System.out.println();
 			});
 			
@@ -147,15 +147,37 @@ public class MemberView {
 		if(member != null) {
 			System.out.println(userId + "님의 검색 결과입니다.");
 			System.out.println("================================");
-			System.out.println("아이디 : " + member.getUserId() + ",");
-			System.out.println("비밀번호 : " + member.getUserPwd() + ",");
-			System.out.println("이름 : " + member.getUserName() + ",");
-			System.out.println("이메일 : " + member.getEmail() + ",");
-			System.out.println("가입일 : " + member.getEnrollDate());
+			System.out.print("아이디 : " + member.getUserId() + ",");
+			System.out.print("비밀번호 : " + member.getUserPwd() + ",");
+			System.out.print("이름 : " + member.getUserName() + ",");
+			System.out.print("이메일 : " + member.getEmail() + ",");
+			System.out.print("가입일 : " + member.getEnrollDate());
 			System.out.println();
 		} else {
 			System.out.println("존재하지 않는 아이디 입니다.");
 		}
+	}
+	
+	private void findByKeyword() {
+		
+		System.out.println("\n회원 이름 키워드로 검색");
+		System.out.print("검색하고자 하는 키워드를 입력해주세요 > ");
+		String keyword = sc.nextLine();
+		
+		List<Member> members = mc.findByKeyword(keyword);
+		
+		if(members.isEmpty()) {
+			System.out.println("조회결과가 존재하지 않습니다.");
+		} else {
+//			for(Member member : members) {
+//				System.out.println(member);
+//			}
+			for (int i = 0; i < members.size(); i++) {
+			    System.out.println((i + 1) + "번 째 조회 결과!");
+			    System.out.println(members.get(i));  // Member의 toString() 또는 getter
+			}
+		}
+		
 		
 	}
 	

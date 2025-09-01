@@ -58,6 +58,16 @@ public class MemberController {
 		// 2. 요청처리 => DAO 객체 생성 후 메소드 호출
 		Member member = new MemberDao().findById(userId);
 		
+		// 3. 요청 처리 후 결과 반환
 		return member;
+	}
+	
+	public List<Member> findByKeyword(String keyword) {
+		
+		// 결과값이 나중에 어떻게 돌아올까??
+		// SELECT -> ResultSet -> Member -> List<Member>
+		List<Member> members = new MemberDao().findByKeyword(keyword);
+		
+		return members;
 	}
 }
