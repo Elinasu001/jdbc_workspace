@@ -14,6 +14,9 @@ public class InsertRun {
 		int rset = 0;
 		
 		Scanner sc = new Scanner(System.in);
+		System.out.print("이벤트 아이디 작성해주세요 > ");
+		String eventId = sc.nextLine();
+		
 		System.out.print("이벤트 제목 작성해주세요 > ");
 		String title = sc.nextLine();
 		
@@ -31,8 +34,9 @@ public class InsertRun {
 		sc.nextLine();
 		
 		String sql = 
-			    "INSERT INTO TB_EVENT (EVENT_ID, TITLE, DESCRIPTION, START_DATE, END_DATE, REWARD_POINT) " +
+			    "INSERT INTO TB_EVENT (EVENT_NO, EVENT_ID, TITLE, DESCRIPTION, START_DATE, END_DATE, REWARD_POINT) " +
 	    	    "VALUES (SEQ_EVENT.NEXTVAL, " +
+			    "'" + eventId + "', " +
 	    	    "'" + title + "', " +
 	    	    "'" + desc + "', " +
 	    	    "TO_DATE('" + startDate + "', 'YYYY-MM-DD'), " +
