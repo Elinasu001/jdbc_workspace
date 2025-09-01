@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kh.statement.model.vo.Member;
 import com.work3.model.vo.Challenge;
 
 public class ChallengeDao {
@@ -166,4 +167,85 @@ public class ChallengeDao {
 		return challenges;
 	}
 	
+	public List<Challenge> findByKeyword(String keyword){
+		List<Challenge> challenges = new ArrayList();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String sql = "SELECT "
+		           + " CHALLENGE_NO"
+		           + ", CHALLENGE_ID"
+		           + ", TITLE"
+		           + ", DESCRIPTION"
+		           + ", START_DATE"
+		           + ", END_DATE"
+		           + ", REWARD_POINT"
+		           + ", CREATOR_USER_NO"
+		           + ", ENROLL_DATE "
+		           + "FROM TB_CHALLENGE "
+		           + "WHERE TITLE LIKE '%" + keyword + "%' "
+		           + "ORDER BY ENROLL_DATE DESC";
+		 try {
+	    	  // 1) JDBC Drvier 등록
+	    	  Class.forName("oracle.jdbc.driver.OracleDriver");	
+	    	  // 2) connection 객체 생성
+	    	  conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
+	    	  // 3) Statement 객체 생성
+	    	  stmt = conn.createStatement();
+	    	  // 4, 5) SQL(SELECT)문을 실행 후 결과 받아오기
+	    	  rset = stmt.executeQuery(sql);
+	    	  
+	    	  // 6) ResultSet 객체에서 각 행에 접근하면서 
+	    	  // 조회 결과가 있다면 컬럼의 값을 뽑아서 VO객체에 필드에 대입한 뒤
+	    	  // List의 요소로 추가함
+	    	  while(rset.next()) {
+	    		    challenges.add(new Challenge(
+	    		          rset.getInt("CHALLENGE_NO"),         // 숫자 PK
+	    		          rset.getString("CHALLENGE_ID"),      // 외부 ID
+	    		          rset.getString("TITLE"),
+	    		          rset.getString("DESCRIPTION"),
+	    		          rset.getString("START_DATE"),
+	    		          rset.getString("END_DATE"),
+	    		          rset.getInt("REWARD_POINT"),
+	    		          rset.getInt("CREATOR_USER_NO"),
+	    		          rset.getDate("ENROLL_DATE")
+	    		    ));
+	    		}
+	    	  
+	      }catch(ClassNotFoundException e	) {
+	    	  e.printStackTrace();
+	      }catch(SQLException e) {
+	    	  e.printStackTrace();
+	      } finally {
+				
+				// 7) 다쓴 JDBC용 객체 자원반납(생성된 순서의 역순으로) => close()
+	    	  
+				try {
+					if(rset != null) rset.close();
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+				
+				
+				try {
+					if(stmt != null) stmt.close();
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+				
+				try {
+					if(conn != null) conn.close();
+				} catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			
+			// 8) 결과 반환
+		return challenges;
+		
+	}
+	
 }
+ 

@@ -35,4 +35,9 @@ public class ChallengeController {
 		return challenges;
 	}
 	
+	public List<Challenge> findByKeyword(String keyword){
+		List<Challenge> challenges = new ChallengeDao().findByKeyword(keyword);
+		return challenges;
+	}
+	
 }

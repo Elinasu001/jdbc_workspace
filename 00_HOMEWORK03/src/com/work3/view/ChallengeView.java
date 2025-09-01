@@ -1,5 +1,6 @@
 package com.work3.view;
 
+import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,7 +32,7 @@ public class ChallengeView {
 			case 1 : save(); break;
 			case 2 : findAll(); break;
 			case 3 : break;
-			case 4 : break;
+			case 4 : findByKeyword(); break;
 			case 5 : break;
 			case 6 : break;
 			case 9 : System.out.println("프로그램을 종료합니다."); return;
@@ -94,6 +95,23 @@ public class ChallengeView {
 			    System.out.println();
 			});
 			
+		}
+	}
+	
+	private void findByKeyword() {
+		System.out.println("\n첼린지 제목 키워드로 검색");
+		System.out.print("검색하고자 하는 키워드를 입력해주세요 > ");
+		String keyword = sc.nextLine();
+		
+		List<Challenge> challenges = cc.findByKeyword(keyword);
+		
+		if(challenges.isEmpty()) {
+			System.out.println("조회결과가 존재하지 않습니다.");
+		} else {
+			for (int i = 0; i < challenges.size(); i++) {
+			    System.out.println((i + 1) + "번 째 조회 결과!");
+			    System.out.println(challenges.get(i));
+			}
 		}
 	}
 }
