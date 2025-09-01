@@ -233,7 +233,7 @@ public class MemberDao {
 				// 조회된 Member 들을 싹 다 돌려보내야함
 				// 배열 특) 크기 정해야됨
 				// 조회 결과가 몇 행일지 특정지을 수 없음
-				// 여러 정보를 담아줄 저장소 ==> List
+				// 여러 정보를 담아줄 저장소 ==> List (클래스 상단에 적어둠)
 				members.add(member);
 			}
 			
@@ -268,6 +268,87 @@ public class MemberDao {
 		// 조회 결과들을 매핑해놓은 Member객체 들의 주소값을 요소로 가지고 있는
 		// List의 주소값을 반환
 		return members;
+	}
+	
+	public Member findById(String userId) {
+		Member member = null;
+		
+		
+		// 0) 필요한 변수들 먼저 선언
+		// JDBC 관련 인터페이스
+		// Connection, Statement, ResultSet
+		/*
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		*/
+		// 이번에는 실행할 SQL문(완성형태로) 
+		/*
+		 * SELECT
+		 *        USERNO
+		 *      , USERID
+		 *      , USERPWD
+		 *      , USERNAME
+		 *      , EMAIL
+		 *      , ENROLLDATE
+		 *   FROM
+		 *        MEMBER
+		 *  WHERE
+		 *        USERID = '사용자가 입력한 ID값'
+		 */
+		
+		String sql = """
+						SELECT
+						       USERNO
+						     , USERID
+						     , USERPWD
+						     , USERNAME
+						     , EMAIL
+						     , ENROLLDATE
+						  FROM
+						       MEMBER
+						 WHERE
+						       USERID = 
+					 """;
+		sql += "'" + userId + "'";
+		
+		
+		try {
+			//1) JDBC Driver 등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");		
+		
+			// 2) Connection 객체 생성
+			// 3) Statement 객체 생성
+			// 4) SQL 실행
+			// 5) ResultSet 받아오기
+			try(Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234")){
+				Statement stmt = conn.createStatement();
+				ResultSet rset = stmt.executeQuery(sql);
+				
+				// 6) 조회결과가 담긴 ResultSet객체에서
+				// 조회결과가 존재한다면 VO객체의 필드에 옮겨담기
+				// ID 가지고 검색(UNIQUE) 한 행만 조회 (즉, 하나의 VO객체를 담는다)
+				if(rset.next()) {
+					member = new Member(rset.getInt("USERNO")
+							          , rset.getString("USERID")
+							          , rset.getString("USERPWD")
+							          , rset.getString("USERNAME")
+							          , rset.getString("EMAIL")
+							          , rset.getDate("ENROLLDATE"));
+				}
+				
+				
+			}catch (SQLException e){
+				e.printStackTrace();
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		// 8) 결과값 반환
+		return member;
+		
 	}
 	
 	

@@ -46,4 +46,18 @@ public class MemberController {
 		
 		return members;
 	}
+	
+	/**
+	 * 사용자에게 입력받은 아이디 값을 이용해서 검색요청을 처리해주는 메소드
+	 * 
+	 * @param userId : 사용자가 입력한 검색하고자하는 문자열
+	 */
+	public Member findById(String userId) {
+		
+		// 1. 데이터 가공 => 넘어가기
+		// 2. 요청처리 => DAO 객체 생성 후 메소드 호출
+		Member member = new MemberDao().findById(userId);
+		
+		return member;
+	}
 }

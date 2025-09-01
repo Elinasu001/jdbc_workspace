@@ -39,7 +39,7 @@ public class MemberView {
 			switch(menuNo) {
 			case 1 : save(); break;
 			case 2 : findAll(); break;
-			case 3 : break;
+			case 3 : findById(); break;
 			case 4 : break;
 			case 5 : break;
 			case 6 : break;
@@ -118,6 +118,45 @@ public class MemberView {
 			});
 			
 		}
+	}
+	
+	/**
+	 * 사용자로부터 회원의 아이디를 입력받아서
+	 * Member테이블로부터 아이디값을 비교해서 조회한 뒤
+	 * 동일한 아이디값을 가진 행의 데이터를 출력해주는 메소드
+	 */
+	private void findById() {
+		
+		System.out.println("\n아이디로 검색 서비스입니다.");
+		System.out.println("아이디를 입력해주세요	> ");
+		String userId = sc.nextLine();
+		
+		Member member = mc.findById(userId);
+		// 1. 조회결과가 존재하지 않았을 경우 == null why? 고대로 왔음 null 초기화 한게 고대로 들어옴.
+		// 2. 조회결과가 존재할 경우 		 == Member 객체의 주소 값
+		/*
+		 *	자바에서 값의 종류 == 자료형
+		 *	정수 = byte, short, int, long
+		 *	실수 = float, double
+		 *	문자 = char
+		 *	논리값 = boolean
+		 *
+		 *	"주소값  = 나머지 다  "
+		 */
+		
+		if(member != null) {
+			System.out.println(userId + "님의 검색 결과입니다.");
+			System.out.println("================================");
+			System.out.println("아이디 : " + member.getUserId() + ",");
+			System.out.println("비밀번호 : " + member.getUserPwd() + ",");
+			System.out.println("이름 : " + member.getUserName() + ",");
+			System.out.println("이메일 : " + member.getEmail() + ",");
+			System.out.println("가입일 : " + member.getEnrollDate());
+			System.out.println();
+		} else {
+			System.out.println("존재하지 않는 아이디 입니다.");
+		}
+		
 	}
 	
 }
