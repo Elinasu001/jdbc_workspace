@@ -1,8 +1,10 @@
 package com.work3.view;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.work3.controller.ChallengeController;
+import com.work3.model.vo.Challenge;
 
 public class ChallengeView {
 	private Scanner sc = new Scanner(System.in);
@@ -27,7 +29,7 @@ public class ChallengeView {
 			
 			switch(menuNo) {
 			case 1 : save(); break;
-			case 2 : break;
+			case 2 : findAll(); break;
 			case 3 : break;
 			case 4 : break;
 			case 5 : break;
@@ -38,7 +40,13 @@ public class ChallengeView {
 		}
 	}
 	
+	/**
+	 * CHALLENGE 테이블에 INSERT할 값을 사용자가 입력받는 화면을 출력해주는 메소드
+	 * 
+	 * 컬럼에 INSERT할 값들을 모두 입력받은 후 입력받은 값 컨트롤러로 전달
+	 */
 	private void save() {
+		
 		System.out.println("--- 챌린지 추가 서비스 입니다 ---");
 		System.out.println("챌린지 아이디를 입력해주세요 > ");
 		String challengeId = sc.nextLine();
@@ -63,6 +71,29 @@ public class ChallengeView {
 			System.out.println("챌린지 추가에 성공했습니다.");
 		}else {
 			System.out.println("챌린지 추가에 실패했습니다.");
+		}
+	}
+	
+	private void findAll() {
+		System.out.println("\n챌린지 전체 조회");
+		
+		List<Challenge> challenges = cc.findAll();
+		// 뷰에서 2절
+		System.out.println("\n조회된 총 회원수는 " + challenges.size() + "명 입니다.");
+		if(challenges.isEmpty()) {
+			System.out.println("조회결과가 존재하지 않습니다.");
+		}else {
+			challenges.stream().forEach(challenge -> {
+			    System.out.println("===============================");
+			    System.out.print("챌린지 아이디 : " + challenge.getChallengeId() + ", ");
+			    System.out.print("챌린지 제목 : " + challenge.getTitle() + ", ");
+			    System.out.print("설명 : " + challenge.getTitle() + ", ");
+			    System.out.print("시작일 : " + challenge.getStartDate() + ", ");
+			    System.out.print("종료일 : " + challenge.getEndDate()+ ", ");
+			    System.out.print("생성자 : " + challenge.getCreatorUserNo());
+			    System.out.println();
+			});
+			
 		}
 	}
 }

@@ -2,8 +2,11 @@ package com.work3.model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.work3.model.vo.Challenge;
 
@@ -82,6 +85,85 @@ public class ChallengeDao {
 		}
 		// 8) 결과반환
 		return result;
+	}
+	
+	public List<Challenge> findAll(){
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		List<Challenge> challenges = new ArrayList();
+		
+		String sql =
+			      "SELECT "
+					  + " CHALLENGE_NO "
+					 + ", CHALLENGE_ID "
+					 + ", TITLE "
+					 + ", DESCRIPTION "
+					 + ", START_DATE "
+					 + ", END_DATE "
+					 + ", REWARD_POINT "
+					 + ", CREATOR_USER_NO "
+					 + ", ENROLL_DATE "
+			      + "FROM "
+			      	   + "TB_CHALLENGE "
+				 + "ORDER "
+				    + "BY "
+				       + "ENROLL_DATE DESC";
+			
+		try {
+			// 1) JDBC Driver 등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			// 2) Connection 객체 생성
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");			
+			
+			// 3) Statement 객체 생성
+			stmt = conn.createStatement();
+			
+			// 4, 5) SQL(SELECT)문 실행 후 결과 반환(ResultSet)
+			rset = stmt.executeQuery(sql);
+			
+			// 6) Mapping
+			while(rset.next()) {
+				
+				Challenge challenge = new Challenge();
+				challenge.setChallengeId(rset.getString("CHALLENGE_ID"));
+				challenge.setTitle(rset.getString("TITLE"));
+				challenge.setDesc(rset.getString("DESCRIPTION"));
+				challenge.setStartDate(rset.getString("START_DATE"));
+				challenge.setEndDate(rset.getString("END_DATE"));
+				challenge.setRewardPoint(rset.getInt("REWARD_POINT"));
+				challenge.setCreatorUserNo(rset.getInt("CREATOR_USER_NO"));
+				challenges.add(challenge);
+			}
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			// 7) 다쓴 JDBC용 객체 자원반납(생성된 순서의 역순으로) => close()
+			try {
+				if(rset != null) rset.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		// 8) 매핑된 객체들 결과 반환
+		return challenges;
 	}
 	
 }

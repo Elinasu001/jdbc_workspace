@@ -14,8 +14,12 @@ public class Challenge {
 	private int creatorUserNo;       // CREATOR_USER_NO
     private Date enrollDate;         // ENROLL_DATE
     
-	public Challenge(String challengeId, String title, String desc, String startDate, String endDate, int rewardPoint, int creatorUserNo) {
+    public Challenge() {
 		super();
+	}
+	public Challenge(String challengeId, String title, String desc, String startDate, String endDate,
+			int rewardPoint, int creatorUserNo) {
+    	
 		this.challengeId = challengeId;
 		this.title = title;
 		this.desc = desc;
@@ -36,7 +40,6 @@ public class Challenge {
 		this.rewardPoint = rewardPoint;
 		this.creatorUserNo = creatorUserNo; 
 	}
-	
 	
 	public int getChallengeNo() {
 		return challengeNo;
