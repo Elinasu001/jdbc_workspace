@@ -17,7 +17,7 @@ public class Member {
     private String userId; 		//USERID VARCHAR2(15) UNIQUE NOT NULL,
     private String userPwd; 	//USERPWD VARCHAR2(20) NOT NULL,
     private String userName; 	//USERNAME VARCHAR2(15) NOT NULL,
-    private String email; 		//sEMAIL VARCHAR2(30),
+    private String email; 		//EMAIL VARCHAR2(30),
     private Date enrollDate; 	//ENROLLDATE DATE DEFAULT SYSDATE NOT NULL // api 있지만 일단, 정석대로 진행
 	// DB의 테이블을 참고하여 컬럼과 유사하게 구성
     
