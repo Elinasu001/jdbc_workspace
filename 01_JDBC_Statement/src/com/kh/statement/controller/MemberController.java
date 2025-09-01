@@ -1,5 +1,7 @@
 package com.kh.statement.controller;
 
+import java.util.List;
+
 import com.kh.statement.model.dao.MemberDao;
 import com.kh.statement.model.vo.Member;
 
@@ -34,5 +36,14 @@ public class MemberController {
 		
 		// 2. 요청 처리 후 결과값 반환
 		return result;
+	}
+	
+	public List<Member> findAll() {
+		
+		// 1. 데이터 가공 == 할 게 없음
+		// 2. DAO 호출
+		List<Member> members = new MemberDao().findAll();
+		
+		return members;
 	}
 }

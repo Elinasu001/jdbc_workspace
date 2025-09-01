@@ -1,8 +1,10 @@
 package com.kh.statement.view;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.kh.statement.controller.MemberController;
+import com.kh.statement.model.vo.Member;
 
 /**
  * MmeberView 클래스는 JDBC 실습을 위해 생성하였으며,
@@ -36,7 +38,7 @@ public class MemberView {
 			
 			switch(menuNo) {
 			case 1 : save(); break;
-			case 2 : break;
+			case 2 : findAll(); break;
 			case 3 : break;
 			case 4 : break;
 			case 5 : break;
@@ -59,11 +61,11 @@ public class MemberView {
 		System.out.print("아이디를 입력해주세요 > ");
 		String userId = sc.nextLine();
 		// 원래는 여기다가 if로 길이 15가 넘으면 조건 달아줘야됨.
-		System.out.println("비밀번호를 입력해주세요 > ");
+		System.out.print("비밀번호를 입력해주세요 > ");
 		String userPwd = sc.nextLine();
-		System.out.println("성함을 입력해주세요 > ");
+		System.out.print("성함을 입력해주세요 > ");
 		String userName = sc.nextLine();
-		System.out.println("이메일을 입력해주세요 > ");
+		System.out.print("이메일을 입력해주세요 > ");
 		String email = sc.nextLine();
 		
 		// 일단 View에서 할 일은 끝남 -> 컨트롤러로 요청 처리
@@ -74,6 +76,47 @@ public class MemberView {
 			System.out.println("회원 가입에 성공했습니다.");
 		} else {
 			System.out.println("회원 가입에 실패했습니다.");
+		}
+	}
+	
+	/**
+	 * 회원 전체 조회 요청 시 Member 테이블에 존재하는 모든 회원의 정보를 출력하는 메소드
+	 */
+	private void findAll() {
+		
+		System.out.println("\n회원 전체 조회");
+		
+		// Controller에게 회원들의 데이터 값 요청
+		List<Member> members = mc.findAll();
+		
+		// 뷰에서 2절
+		System.out.println("\n조회된 총 회원수는 " + members.size() + "명 입니다.");
+		if(members.isEmpty()) {
+			System.out.println("조회결과가 존재하지 않습니다.");
+		}else {
+			/*
+			for(Member member : members) {
+				System.out.println("===============================");
+				System.out.println(member.getUserNo() + "번 회원의 정보");
+				System.out.println("아이디 : " + member.getUserId() + ",");
+				System.out.println("비밀번호 : " + member.getUserPwd() + ",");
+				System.out.println("이름 : " + member.getUserName() + ",");
+				System.out.println("이메일 : " + member.getEmail() + ",");
+				System.out.println("가입일 : " + member.getEnrollDate());
+				System.out.println();
+			}
+			*/
+			members.stream().forEach(member -> {
+			    System.out.println("===============================");
+			    System.out.println(member.getUserNo() + "번 회원의 정보");
+			    System.out.println("아이디 : " + member.getUserId() + ",");
+			    System.out.println("비밀번호 : " + member.getUserPwd() + ",");
+			    System.out.println("이름 : " + member.getUserName() + ",");
+			    System.out.println("이메일 : " + member.getEmail() + ",");
+			    System.out.println("가입일 : " + member.getEnrollDate());
+			    System.out.println();
+			});
+			
 		}
 	}
 	

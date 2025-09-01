@@ -2,8 +2,11 @@ package com.kh.statement.model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.statement.model.vo.Member;
 
@@ -149,4 +152,123 @@ public class MemberDao {
 		// 8) 결과반환
 		return result;
 	}
+	
+	
+	public List<Member> findAll() {
+		
+		// 0) 필요한 변수 선언
+		Connection conn = null;	// 연결된 DB의 정보를 담는 객체
+		Statement stmt = null;	// SQL문을 실행하고 결과를 받기 위한 객체
+		ResultSet rset = null;	// SELECT문을 수행하고 조회 결과값들이 담길 객체
+		List<Member> members = new ArrayList();
+		
+		String sql = """
+						SELECT
+						       USERNO
+						     , USERID
+						     , USERPWD
+						     , USERNAME
+						     , EMAIL
+						     , ENROLLDATE
+						  FROM
+						       MEMBER
+						 ORDER
+						    BY
+						       ENROLLDATE DESC
+					 """;
+		
+		try {
+			// 1) JDBC Driver 등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			// 2) Connection 객체 생성
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
+			
+			// ExceptionHandling
+			
+			// 3) Statement 객체 생성
+			stmt = conn.createStatement();
+			
+			// 4, 5) SQL(SELECT)문 실행 후 결과 반환(ResultSet)
+			rset = stmt.executeQuery(sql);
+			
+			// 6) Mapping
+			// 서로다른 형태의 데이터 모델 간의 연결을 정의하는 과정
+			// 자바 == 데이터 객체 형태
+			// 구조를 맞춰주는 작업
+			// 관계형 데이터베이스 == 테이블 형태
+			
+			// 현재 조회 결과는 ResultSet에 담겨있음
+			// 한 행씩 뽑아서 VO 객체의 필드에 담기
+			// rset.next()
+			// 커서를 한 줄 아래로 옮겨주고 존재한다 true / 존재하지 않는다 false
+			
+			while(rset.next()) {
+				
+				// 현재 rset의 커서가 가리키고 있는 행의 데이터를
+				// 하나하나씩 뽑아서 MemberVO의 필드에 대입
+				Member member = new Member();
+				
+				// ResultSet 객체로부터 어떤 컬럼의 값을 뽑을건지 메소드를 호출하면서 컬럼명을 명시
+				// rset.getInt(컬럼명)	: 정수형 값을 int형으로 매핑할 때
+				// rset.getString(컬럼명) : 문자열형 값을 String형으로 매핑할 때
+				// rset.getDate(컬럼명)	: 날짜형 값을 java.sql.Date형으로 매핑할 때
+				// 컬럼명 : 대소문자를 가리지 않음
+				// 컬럼명말고 컬럼의 순번으로도 가능함
+				// 권장사항 : 컬럼명으로 작성하고 대문자로 작성
+				
+				member.setUserNo(rset.getInt("USERNO"));
+				member.setUserId(rset.getString("USERID"));
+			    member.setUserPwd(rset.getString("USERPWD"));
+			    member.setUserName(rset.getString("USERNAME"));
+			    member.setEmail(rset.getString("EMAIL"));
+				member.setEnrollDate(rset.getDate("ENROLLDATE"));
+				// 컬럼명이 오타났을 때 SQLException 발생
+				// 테이블 컬럼값을 뽑아내는 것이 아니고
+				// ResultSet에서 조회된 결과값을 뽑아내는 것 예) 별칭 넣을 경우 주의
+				
+				// 항 행에 모든 컬럼의 데이터 값을
+				// 각각의 필드에 담아 Member 객체로 옮겨담으면 끝 !!!
+				
+				// 조회된 Member 들을 싹 다 돌려보내야함
+				// 배열 특) 크기 정해야됨
+				// 조회 결과가 몇 행일지 특정지을 수 없음
+				// 여러 정보를 담아줄 저장소 ==> List
+				members.add(member);
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			// 7) 다쓴 JDBC용 객체 자원반납(생성된 순서의 역순으로) => close()
+			try {
+				if(rset != null) rset.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			
+			try {
+				if(stmt != null) stmt.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// 8) 매핑된 객체들 결과 반환
+		// 조회 결과들을 매핑해놓은 Member객체 들의 주소값을 요소로 가지고 있는
+		// List의 주소값을 반환
+		return members;
+	}
+	
+	
 }
