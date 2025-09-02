@@ -9,7 +9,7 @@ public class Challenge {
 	private String title;		     // TITLE
 	private String desc; 			 // DESCRIPTION
 	private String startDate; 		 // START_DATE
-	private String endDate; 		 // END_DATE
+	private String endDate; 		 	 // END_DATE
 	private int rewardPoint; 		 // REWARD_POINT
 	private int creatorUserNo;       // CREATOR_USER_NO
     private Date enrollDate;         // ENROLL_DATE
@@ -19,7 +19,6 @@ public class Challenge {
 	}
 	public Challenge(String challengeId, String title, String desc, String startDate, String endDate,
 			int rewardPoint, int creatorUserNo) {
-    	
 		this.challengeId = challengeId;
 		this.title = title;
 		this.desc = desc;

@@ -20,44 +20,29 @@ public class ChallengeDao {
 	
 	public int save(Challenge challenge) {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String sql = "INSERT "
-				     + "INTO "
-				           + "TB_CHALLENGE "
-				           + "("
-	                       + "CHALLENGE_NO"
-	                     + ", CHALLENGE_ID"
-	                     + ", TITLE"
-	                     + ", DESCRIPTION"
-	                     + ", START_DATE"
-	                     + ", END_DATE"
-	                     + ", REWARD_POINT"
-	                     + ", CREATOR_USER_NO"
-	                     + ", ENROLL_DATE"
-		                   + ") "
-		            + "VALUES "
-	                       + "("
-		                   + "SEQ_CHALLENGE.NEXTVAL"
-		                 + ", '" + challenge.getChallengeId() + "'"
-		                 + ", '" + challenge.getTitle() + "'"
-		                 + ", '" + challenge.getDesc() + "'"
-		                 + ", TO_DATE('" + challenge.getStartDate() + "', 'YYYY-MM-DD')"
-		                 + ", TO_DATE('" + challenge.getEndDate() + "', 'YYYY-MM-DD')"
-		                 + ", " + challenge.getRewardPoint()
-		                 + ", " + challenge.getCreatorUserNo()
-		                 + ", SYSDATE" + ")";
+		String sql = """
+						INSERT
+						  INTO
+						       TB_CHALLENGE
+						VALUES
+						       (
+						       SEQ_CHALLENGE.NEXTVAL
+						     , ?
+						     , ?
+						     , ?
+						     , ?
+						     , ?
+						     , ?
+						     , ?
+						     , SYSDATE
+						       )
+				     """;
 		
+		//TO_DATE(?, 'YYYY-MM-DD')
 		
-		System.out.println("DEBUG challenge = "
-			    + challenge.getChallengeId() + ", "
-			    + challenge.getTitle() + ", "
-			    + challenge.getDesc() + ", "
-			    + challenge.getStartDate() + " ~ " + challenge.getEndDate() + ", "
-			    + challenge.getRewardPoint() + ", "
-			    + "creatorUserNo=" + challenge.getCreatorUserNo());
-
 		try {
 			// 1) JDBC Driver 등록
 			Class.forName(DRIVER);
@@ -67,13 +52,19 @@ public class ChallengeDao {
 			System.out.println("Connection 객체 생성!");
 			// 로직 처음부터 만드는 거라 AutoCommit 끄기 
 			conn.setAutoCommit(false);
-			
 			// 3) Statement 객체 생성
-			stmt = conn.createStatement(); // new Statement(conn); 이런 느낌
-			System.out.println("Statement 객체 생성!");
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, challenge.getChallengeId());
+			pstmt.setString(2, challenge.getTitle());
+			pstmt.setString(3, challenge.getDesc());
+			pstmt.setString(4, challenge.getStartDate());
+			pstmt.setString(5, challenge.getEndDate());
+			pstmt.setInt(6, challenge.getRewardPoint());
+			pstmt.setInt(7, challenge.getCreatorUserNo());
 			
 			// 4, 5) DB에 완성된 SQL문 전달하면서 실행도 하고 결과도 받고
-			result = stmt.executeUpdate(sql);
+			result = pstmt.executeUpdate();
 			System.out.println("SQL문 실행");
 			
 			// 6) 트래잭션 처리
@@ -89,7 +80,7 @@ public class ChallengeDao {
 			
 			// 7) 사용이 모두 끝난 JDBC용 객체 자원반납
 			try {
-				if(stmt != null) stmt.close();
+				if(pstmt != null) pstmt.close();
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -106,26 +97,27 @@ public class ChallengeDao {
 	
 	public List<Challenge> findAll(){
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Challenge> challenges = new ArrayList();
 		
-		String sql =
-			      "SELECT "
-					  + " CHALLENGE_NO "
-					 + ", CHALLENGE_ID "
-					 + ", TITLE "
-					 + ", DESCRIPTION "
-					 + ", START_DATE "
-					 + ", END_DATE "
-					 + ", REWARD_POINT "
-					 + ", CREATOR_USER_NO "
-					 + ", ENROLL_DATE "
-			      + "FROM "
-			      	   + "TB_CHALLENGE "
-				 + "ORDER "
-				    + "BY "
-				       + "ENROLL_DATE DESC";
+		String sql = """
+						SELECT
+						       CHALLENGE_NO
+						     , CHALLENGE_ID
+						     , TITLE
+						     , DESCRIPTION
+						     , START_DATE
+						     , END_DATE
+						     , REWARD_POINT
+						     , CREATOR_USER_NO
+						     , ENROLL_DATE
+						  FROM
+						       TB_CHALLENGE
+						 ORDER
+						    BY
+						       ENROLL_DATE DESC
+					 """;
 			
 		try {
 			// 1) JDBC Driver 등록
@@ -134,10 +126,10 @@ public class ChallengeDao {
 			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);			
 			
 			// 3) Statement 객체 생성
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 			
 			// 4, 5) SQL(SELECT)문 실행 후 결과 반환(ResultSet)
-			rset = stmt.executeQuery(sql);
+			rset = pstmt.executeQuery();
 			
 			// 6) Mapping
 			while(rset.next()) {
@@ -168,7 +160,7 @@ public class ChallengeDao {
 			
 			
 			try {
-				if(stmt != null) stmt.close();
+				if(pstmt != null) pstmt.close();
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
