@@ -178,7 +178,7 @@ public class ChallengeDao {
 	public List<Challenge> findByKeyword(String keyword){
 		List<Challenge> challenges = new ArrayList();
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String sql = """
@@ -195,33 +195,23 @@ public class ChallengeDao {
 						 FROM
 						       TB_CHALLENGE
 						WHERE
-						       TITLE LIKE '%' + keyword +'%'
-
+						       TITLE LIKE '%'||?||'%'
+					    ORDER
+					       BY
+					           ENROLL_DATE DESC
 				     				     """;
 		
-		
-		String sql = "SELECT "
-		           + " CHALLENGE_NO"
-		           + ", CHALLENGE_ID"
-		           + ", TITLE"
-		           + ", DESCRIPTION"
-		           + ", START_DATE"
-		           + ", END_DATE"
-		           + ", REWARD_POINT"
-		           + ", CREATOR_USER_NO"
-		           + ", ENROLL_DATE "
-		           + "FROM TB_CHALLENGE "
-		           + "WHERE TITLE LIKE '%" + keyword + "%' "
-		           + "ORDER BY ENROLL_DATE DESC";
 		 try {
 	    	  // 1) JDBC Drvier 등록
 	    	  Class.forName(DRIVER);	
 	    	  // 2) connection 객체 생성
 	    	  conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 	    	  // 3) Statement 객체 생성
-	    	  stmt = conn.createStatement();
+	    	  pstmt = conn.prepareStatement(sql);
+	    	  
+	    	  pstmt.setString(1, keyword);
 	    	  // 4, 5) SQL(SELECT)문을 실행 후 결과 받아오기
-	    	  rset = stmt.executeQuery(sql);
+	    	  rset = pstmt.executeQuery();
 	    	  
 	    	  // 6) ResultSet 객체에서 각 행에 접근하면서 
 	    	  // 조회 결과가 있다면 컬럼의 값을 뽑아서 VO객체에 필드에 대입한 뒤
@@ -256,7 +246,7 @@ public class ChallengeDao {
 				
 				
 				try {
-					if(stmt != null) stmt.close();
+					if(pstmt != null) pstmt.close();
 				} catch(SQLException e) {
 					e.printStackTrace();
 				}
