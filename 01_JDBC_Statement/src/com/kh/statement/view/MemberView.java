@@ -147,10 +147,10 @@ public class MemberView {
 		if(member != null) {
 			System.out.println(userId + "님의 검색 결과입니다.");
 			System.out.println("================================");
-			System.out.print("아이디 : " + member.getUserId() + ",");
-			System.out.print("비밀번호 : " + member.getUserPwd() + ",");
-			System.out.print("이름 : " + member.getUserName() + ",");
-			System.out.print("이메일 : " + member.getEmail() + ",");
+			System.out.print("아이디 : " + member.getUserId() + ", ");
+			System.out.print("비밀번호 : " + member.getUserPwd() + ", ");
+			System.out.print("이름 : " + member.getUserName() + ", ");
+			System.out.print("이메일 : " + member.getEmail() + ", ");
 			System.out.print("가입일 : " + member.getEnrollDate());
 			System.out.println();
 		} else {
