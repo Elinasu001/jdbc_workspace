@@ -3,6 +3,7 @@ package com.kh.statement.controller;
 import java.util.List;
 
 import com.kh.statement.model.dao.MemberDao;
+import com.kh.statement.model.dto.PasswordDTO;
 import com.kh.statement.model.vo.Member;
 
 /**
@@ -62,6 +63,11 @@ public class MemberController {
 		return member;
 	}
 	
+	
+	/**
+	 * @param keyword
+	 * 
+	 */
 	public List<Member> findByKeyword(String keyword) {
 		
 		// 결과값이 나중에 어떻게 돌아올까??
@@ -69,5 +75,27 @@ public class MemberController {
 		List<Member> members = new MemberDao().findByKeyword(keyword);
 		
 		return members;
+	}
+	
+	/**
+	 * @param userId
+	 * @param userPwd
+	 * @param newPassword
+	 */
+	public int update(String userId, String userPwd, String newPassword) {
+		
+		// 1. 데이터 가공
+		// DTO에 새로운 값들을 담아주자 !!
+		PasswordDTO pd = new PasswordDTO(userId, userPwd, newPassword);
+		
+		// 2. 요청처리
+		// 아이디랑 비밀번호랑 바꿀비밀번호 줄테니
+		// 아이디랑 비밀번호 맞는 지 확인하고 바꿀 비밀번호로 비밀번호 컬럼값 바꿔줘
+		// DAO야 이거 줄게 해줘
+		int result = new MemberDao().update(pd);
+		
+		// 3. 뷰로 결과반환
+		return result;
+		
 	}
 }

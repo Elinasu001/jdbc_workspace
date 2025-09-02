@@ -41,7 +41,7 @@ public class MemberView {
 			case 2 : findAll(); break;
 			case 3 : findById(); break;
 			case 4 : findByKeyword(); break;
-			case 5 : break;
+			case 5 : update(); break;
 			case 6 : break;
 			case 9 : System.out.println("프로그램을 종료합니다."); return;
 			default : System.out.println("잘못된 메뉴 선택입니다.");
@@ -178,6 +178,28 @@ public class MemberView {
 			}
 		}
 		
+		
+	}
+	
+	private void update() {
+		System.out.println("\n회원 정보 수정 서비스입니다.");
+		
+		// 아이디랑 비밀번호랑 새비밀번호 받아서
+		// 아이디랑 비밀번호가 있는 거 있으면 새 비밀번호로 바꾸기
+		System.out.println("아이디를 입력해주세요 > ");
+		String userId = sc.nextLine();
+		System.out.println("비밀번호를 입력해주세요 > ");
+		String userPwd = sc.nextLine();
+		System.out.println("새 비밀번호를 입력해주세요 > ");
+		String newPassword = sc.nextLine();
+		
+		int result = mc.update(userId, userPwd, newPassword);
+		
+		if(result > 0) {
+			System.out.println("비밀번호 변경에 성공하셨습니다.");
+		} else {
+			System.out.println("비밀번호 변경에 실패하셨습니다.");
+		}
 		
 	}
 	

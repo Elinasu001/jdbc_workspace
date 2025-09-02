@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kh.statement.model.dto.PasswordDTO;
 import com.kh.statement.model.vo.Member;
 
 public class MemberDao {
@@ -440,6 +441,72 @@ public class MemberDao {
 		
 		// 8) 결과 반환
 		return members;
+	}
+	
+	public int update(PasswordDTO pd) {
+		// UPDATE -> 처리된 행의 개수(int)
+		// -> 트랜잭션처리
+		
+		// 0) 필요한 변수들 세팅
+		Connection conn = null;	// DB랑 연경
+		Statement stmt = null; 	// SQL문 실행
+		int result = 0;
+		
+		// 조건을 달 경우 PK로 다는 것이 좋다 WHY? 각 행을 조회함.
+		String sql = "UPDATE "
+				           + "MEMBER "
+				       +"SET "
+				           + "USERPWD = '" + pd.getNewPassword() + "' "
+				    + "WHERE "
+				           + "USERNO = (SELECT "
+				            			     + "USERNO "
+				            		   + "FROM "
+				            			     + "MEMBER "
+				            		  + "WHERE "
+				            			     + "USERID = '" + pd.getUserId() + "' "
+				            		    + "AND "
+				            			     + "USERPWD = '" + pd.getUserPwd() + "')";
+		try {
+			// 1) JDBC Driver등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			// 2) Connection 만들기
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
+					
+			// 2_2) AutoCommit
+			conn.setAutoCommit(false);
+			
+			// 3) 객체 생성
+			stmt = conn.createStatement();
+			
+			// 4, 5) SQL문 실행(update) 실행 후 결과 받기
+			result = stmt.executeUpdate(sql);
+			
+			// 6) 트랜잭션 처리
+			if(result > 0) {
+				conn.commit();
+			}
+			
+			
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// 7) 사용이 끝난 jdbc용 객체 반납 => 생성된 순서의 역순으로 (close())
+			try {
+				if(stmt != null) stmt.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		// 8) 결과반환
+		return result;
 	}
 	
 	
