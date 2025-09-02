@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kh.statement.model.dto.PasswordDTO;
 import com.kh.statement.model.vo.Member;
 
 public class MemberDao {
@@ -405,4 +406,76 @@ public class MemberDao {
 		
 		return members;
 	}
+	
+	// PasswordDTO : 객체간 이동 하고 싶을 경우 
+	public int update(PasswordDTO pd) {
+		// update 할 일 : 전달받은 값을 가지고 값이 존재하는 행을 찾아서 정보를 갱신해줌.
+		// 얘가 맡은 일 : SQL문 실행하고 결과받아오기
+		
+		// 0) 
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = """
+				  		UPDATE
+				  		       MEMBER
+				  		   SET
+				  		       USERPWD = ?
+				  		 WHERE
+				  		       USERID = ?
+				  		   AND
+				  		       USERPWD = ?
+					 """;
+		// 실행순서 앞에서 부터 
+		
+		try {
+			// 1)
+			Class.forName(DRIVER);
+			// 2)
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			conn.setAutoCommit(false);
+			// 3_1) 
+			pstmt = conn.prepareStatement(sql);
+			// 3_2) // 실행순서 앞에서 부터 
+			pstmt.setString(1, pd.getNewPassword());
+			pstmt.setString(2, pd.getUserId());
+			pstmt.setString(3, pd.getUserPwd());
+			
+			// 4, 5)
+			result = pstmt.executeUpdate();
+			
+			// 6) 
+			if(result > 0) {
+				conn.commit();
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+			
+			try {
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
