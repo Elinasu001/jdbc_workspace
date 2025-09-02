@@ -47,4 +47,15 @@ public class ChallengeController {
 		return result;
 	}
 	
+	public int delete(String challengeId, int creatorUserNo) {
+		Challenge challenge = new Challenge();
+		
+		challenge.setChallengeId(challengeId);
+		challenge.setCreatorUserNo(creatorUserNo);
+		
+		int result = new ChallengeDao().delete(challenge);
+		
+		return result;
+	}
+	
 }

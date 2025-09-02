@@ -134,6 +134,19 @@ public class ChallengeView {
 	}
 	
 	private void delete() {
+		System.out.println("\n 챌린지를 삭제하는 서비스입니다.");
+		System.out.println("챌린지 아이디를 입력해주세요 > ");
+		String challengeId = sc.nextLine();
+		System.out.println("생성자 번호를 입력해주세요 > ");
+		int creatorUserNo = sc.nextInt();
+		sc.nextLine();
 		
+		int result = cc.delete(challengeId, creatorUserNo);
+		
+		if(result > 0) {
+			System.out.println("삭제에 성공하셨습니다.");
+		} else {
+			System.out.println("삭제에 실패하셨습니다.");
+		}
 	}
 }

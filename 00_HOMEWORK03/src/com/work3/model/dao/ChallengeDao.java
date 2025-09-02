@@ -318,5 +318,50 @@ public class ChallengeDao {
 		
 	}
 	
+	public int delete(Challenge challenge) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = """
+						DELETE
+						  FROM
+						       TB_CHALLENGE
+						 WHERE
+						       CHALLENGE_ID = ?
+						   AND
+						       CREATOR_USER_NO = ?
+					 """;
+		
+		try {
+			Class.forName(DRIVER);
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, challenge.getChallengeId());
+			pstmt.setInt(2, challenge.getCreatorUserNo());
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null)pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+		
+	}
+	
 }
  
