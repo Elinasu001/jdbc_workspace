@@ -28,6 +28,9 @@ JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
   - 회원 이름 정보 변경
   - 회원 탈퇴
 
+JDBC + MVC
+<img width="718" height="347" alt="55555" src="https://github.com/user-attachments/assets/edf008ef-cc99-4c00-bde5-fc1e204cd7c1" />
+
 
 
 ---
