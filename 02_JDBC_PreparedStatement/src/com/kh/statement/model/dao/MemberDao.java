@@ -454,6 +454,7 @@ public class MemberDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			// 7)
 			try {
 				if(pstmt != null) pstmt.close();
 			} catch (SQLException e) {
@@ -467,10 +468,54 @@ public class MemberDao {
 			}
 		}
 		
-		
+		// 8)
 		return result;
 	}
 	
+	
+	public int delete(Member member) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = """
+						DELETE
+						  FROM
+						       MEMBER
+						 WHERE
+						       USERID = ?
+						   AND
+						       USERPWD = ?
+				     """;
+		
+		try {
+			Class.forName(DRIVER);
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getUserId());
+			pstmt.setString(2, member.getUserPwd());
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return result;
+	}
 	
 	
 	
