@@ -219,7 +219,7 @@ public class MemberDao {
 	                */
 	            	Member member = new Member();
 	                member.setUserNo(rset.getInt("USERNO"));
-	                member.setUserId( rset.getString("USERID"));
+	                member.setUserId(rset.getString("USERID"));
 	                member.setUserPwd(rset.getString("USERPWD"));
 	                member.setEmail(rset.getString("EMAIL"));
 	                member.setEnrollDate(rset.getDate("ENROLLDATE"));
@@ -314,11 +314,11 @@ public class MemberDao {
 					// 6) rset에 값있나없나 판단 후 있다 VO필드에 매핑
 					if(rset.next()) {
 						member = new Member(rset.getInt("USERNO")
-										  , rset.getString("USERID")
-										  , rset.getString("USERPWD")
-										  , rset.getString("USERNAME")
-										  , rset.getString("EMAIL")
-										  , rset.getDate("ENROLLDATE"));
+										   ,rset.getString("USERID")
+										   ,rset.getString("USERPWD")
+										   ,rset.getString("USERNAME")
+										   ,rset.getString("EMAIL")
+										   ,rset.getDate("ENROLLDATE"));
 					}
 				}
 				
@@ -335,5 +335,74 @@ public class MemberDao {
 		
 		// 8) 결과 반환
 		return member;
+	}
+	
+	// 이름 키워드 검색
+	public List<Member> findByKeyword(String keyword){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Member> members = new ArrayList();
+		
+		// 실행할 SQL문
+		String sql = """
+						SELECT
+						       USERNO
+						     , USERID
+						     , USERPWD
+						     , USERNAME
+						     , EMAIL
+						     , ENROLLDATE
+						  FROM
+						       MEMBER  
+						 WHERE
+						       USERNAME LIKE '%'||?||'%'
+						 ORDER
+						    BY
+						       ENROLLDATE DESC
+					 """;
+		
+		try {
+			Class.forName(DRIVER);
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			pstmt = conn.prepareStatement(sql);
+			//pstmt.setString(1, "%" + keyword + "%");
+			pstmt.setString(1, keyword);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				members.add(new Member(rset.getInt("USERNO")
+									  ,rset.getString("USERID")
+									  ,rset.getString("USERPWD")
+									  ,rset.getString("USERNAME")
+									  ,rset.getString("EMAIL")
+									  ,rset.getDate("ENROLLDATE")));
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			try {
+				if(rset != null) rset.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(pstmt != null) pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(conn != null) conn.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return members;
 	}
 }
