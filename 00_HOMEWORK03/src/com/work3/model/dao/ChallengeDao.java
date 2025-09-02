@@ -181,6 +181,25 @@ public class ChallengeDao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
+		String sql = """
+						SELECT
+						       CHALLENGE_NO
+						     , CHALLENGE_ID
+						     , TITLE
+						     , DESCRIPTION
+						     , START_DATE
+						     , END_DATE
+						     , REWARD_POINT
+						     , CREATOR_USER_NO
+						     , ENROLL_DATE
+						 FROM
+						       TB_CHALLENGE
+						WHERE
+						       TITLE LIKE '%' + keyword +'%'
+
+				     				     """;
+		
+		
 		String sql = "SELECT "
 		           + " CHALLENGE_NO"
 		           + ", CHALLENGE_ID"
