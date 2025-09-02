@@ -42,7 +42,7 @@ public class MemberView {
 			case 3 : findById(); break;
 			case 4 : findByKeyword(); break;
 			case 5 : update(); break;
-			case 6 : break;
+			case 6 : delete(); break;
 			case 9 : System.out.println("프로그램을 종료합니다."); return;
 			default : System.out.println("잘못된 메뉴 선택입니다.");
 			}
@@ -199,6 +199,23 @@ public class MemberView {
 			System.out.println("비밀번호 변경에 성공하셨습니다.");
 		} else {
 			System.out.println("비밀번호 변경에 실패하셨습니다.");
+		}
+		
+	}
+	
+	private void delete() {
+		System.out.println("안녕히가세요!");
+		System.out.println("아이디를 입력해주세요 > ");
+		String userId = sc.nextLine();
+		System.out.println("비밀번호를 입력해주세요 > ");
+		String userPwd = sc.nextLine();
+		
+		int result = mc.delete(userId, userPwd);
+		
+		if(result > 0) {
+			System.out.println("삭제에 성공하셨스니다.");
+		} else {
+			System.out.println("삭제에 실패하셨습니다.");
 		}
 		
 	}

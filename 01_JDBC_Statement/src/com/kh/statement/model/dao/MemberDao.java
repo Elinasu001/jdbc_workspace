@@ -510,4 +510,44 @@ public class MemberDao {
 	}
 	
 	
+	public int delete(Member member) {
+		
+		Connection conn = null;
+		Statement stmt = null;
+		int result = 0;
+		
+		String sql = "DELETE "
+				     + "FROM "
+				     	   + "MEMBER "
+				    + "WHERE "
+				     	   + "USERID = '" + member.getUserId() + "' "
+				      + "AND "
+				     	   + "USERPWD = '" + member.getUserPwd() + "'";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
+			conn.setAutoCommit(false);
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(stmt != null) stmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(conn != null) conn.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+	
 }

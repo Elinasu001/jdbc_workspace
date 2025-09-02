@@ -96,6 +96,22 @@ public class MemberController {
 		
 		// 3. 뷰로 결과반환
 		return result;
-		
 	}
+	
+	
+	public int delete(String userId, String userPwd) {
+		
+		// 1. 데이터 가공
+		Member member = new Member();
+		// 생성자 없으니 setter로 넣기
+		member.setUserId(userId);
+		member.setUserPwd(userPwd);
+		
+		// 2. 요청 처리
+		int result = new MemberDao().delete(member);
+		
+		// 3. 결과반환
+		return result;
+	}
+	
 }
