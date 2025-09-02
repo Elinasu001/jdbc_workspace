@@ -144,7 +144,10 @@ public class MemberDao {
 	            pstmt.setString(2, member.getUserPwd());
 	            pstmt.setString(3, member.getUserName());
 	            pstmt.setString(4, member.getEmail());
-
+	            // 위치 홀더를 올바르게 다 채우지 못했다.
+	            // 자료형이 컬럼의 자료형과 맞지않는 값을 Bind
+	            
+	            
 	            // 4) SQL 실행
 	            result = pstmt.executeUpdate();
 
@@ -193,7 +196,7 @@ public class MemberDao {
 			
 			// try-with-resources로 Connection, PreparedStatement, ResultSet 자동 close
 	        // 2) Connection 객체 생성 (DB와 연결 -> URL, 사용자이름, 비밀번호)
-			// 3) 3) PreparedStatement 객체 생성
+			// 3) PreparedStatement 객체 생성
 			// 4, 5) SQL(SELECT)문을 실행 후 결과도 받아오기
 			// 7) 사용이 모두 끝난 JDBC용 객체 반납(생성된 순서의 역순으로)
 			try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -232,5 +235,105 @@ public class MemberDao {
 		// 8) 컨트롤러에게 결과 반환
 		return members;
 	}
+	/*
+	 * PreparedStatement가 Statement보다 좋은이유
+	 * 
+	 * 1. 구문분석 및 컴파일 최적화
+	 * 
+	 * stmt.excuteUpdate(sql);
+	 * pstmt.excuteUpdate();
+	 * 
+	 * Statement는 매 번 SQL문을 파싱하고 실행하지만
+	 * PreparedStatement는 SQL쿼리를 최초 1회만 파싱하고 실행계획을 캐싱(메모리에 올림)한다.
+	 * 
+	 * 재사용적인 측면에서 훨씬 효율적이다.
+	 * 
+	 * 2. DB서버에 대한 트래픽 감소
+	 * 
+	 * 쿼리 자체는 한 번만 전송하고 이후에는 바인딩할 값만 전송하기 때문에 효율적이다.
+	 * 
+	 * 동일쿼리를 반복 실행할 때, 높은 트래픽이 몰리는 애플리케이션일 때 더욱더 효율적이다.
+	 * 
+	 * DB작업 -> 계획 세울 때 리소스를 많이 잡아먹음
+	 * 
+	 * 3. SQL Injection 방지
+	 * 
+	 * SELECT
+	 *        EMAIL
+	 *   FROM
+	 *        MEMBER
+	 *  WHERE
+	 *        USERID = '" + m.getUserId() + "'"
+	 *    AND 
+	 *        USERPWD = '" + m.getUserPwd()	+ "'"
+	 * 
+	 * 사용자의 입력값 == ' OR '1'='1 일 경우(SQL 인젝션 공격할 경우),
+	 * Statement는 이걸 막을 수가 없음
+	 * 
+	 * PreparedStatement는 인젝션 방지가 됨 ==> 보안적인 측면에도 훨씬 좋음
+	 *  
+	 * 
+	 */
 	
+	public Member findById(String userId) {
+		Member member = null;
+		
+		// 0) 필요한 변수들 선언
+		//Connection conn = null;
+		//PreparedStatement pstmt = null;
+		//ResultSet rset = null;
+		
+		String sql = """
+						SELECT
+						       USERNO
+						     , USERID
+						     , USERPWD
+						     , USERNAME
+						     , EMAIL
+						     , ENROLLDATE
+						  FROM
+						       MEMBER
+						 WHERE
+						       USERID = ?
+					 """;
+		
+		try {
+			// 1) JDBC Driver등록
+			Class.forName(DRIVER);
+			
+			// 2) Connection 객체 생성
+			// 3_1) PreparedStatement 객체 생성
+			try(Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement(sql)){
+				
+				// 3_2) 값채우기
+				pstmt.setString(1, userId);
+				
+				// 4, 5) SQL문 실행 및 결과받기 (null은 있을 수 없음!!)
+				try(ResultSet rset = pstmt.executeQuery()){
+					// 6) rset에 값있나없나 판단 후 있다 VO필드에 매핑
+					if(rset.next()) {
+						member = new Member(rset.getInt("USERNO")
+										  , rset.getString("USERID")
+										  , rset.getString("USERPWD")
+										  , rset.getString("USERNAME")
+										  , rset.getString("EMAIL")
+										  , rset.getDate("ENROLLDATE"));
+					}
+				}
+				
+			}
+			
+			
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		// finally 할경우 conn, pstmt, conn 자원 반납해주기
+		
+		// 8) 결과 반환
+		return member;
+	}
 }
