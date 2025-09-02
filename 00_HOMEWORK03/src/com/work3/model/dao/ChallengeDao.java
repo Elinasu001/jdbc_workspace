@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kh.statement.model.vo.Member;
 import com.work3.model.vo.Challenge;
 
 public class ChallengeDao {
@@ -18,20 +17,31 @@ public class ChallengeDao {
 		Statement stmt = null;
 		int result = 0;
 		
-		String sql = "INSERT INTO TB_CHALLENGE ("
-		           + "CHALLENGE_NO, CHALLENGE_ID, TITLE, DESCRIPTION, "
-		           + "START_DATE, END_DATE, REWARD_POINT, CREATOR_USER_NO, ENROLL_DATE"
-		           + ") VALUES ("
-		           + "SEQ_CHALLENGE.NEXTVAL, "
-		           + "'" + challenge.getChallengeId() + "', "
-		           + "'" + challenge.getTitle() + "', "
-		           + "'" + challenge.getDesc() + "', "
-		           + "TO_DATE('" + challenge.getStartDate() + "', 'YYYY-MM-DD'), "
-		           + "TO_DATE('" + challenge.getEndDate() + "', 'YYYY-MM-DD'), "
-		           + challenge.getRewardPoint() + ", "
-		           + challenge.getCreatorUserNo() + ", "
-		           + "SYSDATE"
-		           + ")";
+		String sql = "INSERT "
+				     + "INTO "
+				           + "TB_CHALLENGE "
+				           + "("
+	                       + "CHALLENGE_NO"
+	                     + ", CHALLENGE_ID"
+	                     + ", TITLE"
+	                     + ", DESCRIPTION"
+	                     + ", START_DATE"
+	                     + ", END_DATE"
+	                     + ", REWARD_POINT"
+	                     + ", CREATOR_USER_NO"
+	                     + ", ENROLL_DATE"
+		                   + ") "
+		            + "VALUES "
+	                       + "("
+		                   + "SEQ_CHALLENGE.NEXTVAL"
+		                 + ", '" + challenge.getChallengeId() + "'"
+		                 + ", '" + challenge.getTitle() + "'"
+		                 + ", '" + challenge.getDesc() + "'"
+		                 + ", TO_DATE('" + challenge.getStartDate() + "', 'YYYY-MM-DD')"
+		                 + ", TO_DATE('" + challenge.getEndDate() + "', 'YYYY-MM-DD')"
+		                 + ", " + challenge.getRewardPoint()
+		                 + ", " + challenge.getCreatorUserNo()
+		                 + ", SYSDATE" + ")";
 		
 		
 		System.out.println("DEBUG challenge = "
