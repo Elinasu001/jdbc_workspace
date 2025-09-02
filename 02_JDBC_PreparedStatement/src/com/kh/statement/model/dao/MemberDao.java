@@ -495,6 +495,7 @@ public class MemberDao {
 			pstmt.setString(1, member.getUserId());
 			pstmt.setString(2, member.getUserPwd());
 			result = pstmt.executeUpdate();
+			// 트랜잭션 처리 안해도 돌아감 ...?
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

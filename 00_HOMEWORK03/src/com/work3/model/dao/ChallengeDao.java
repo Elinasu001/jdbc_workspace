@@ -2,15 +2,21 @@ package com.work3.model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.work3.model.dto.TitleDTO;
 import com.work3.model.vo.Challenge;
 
 public class ChallengeDao {
+	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private final String URL = "jdbc:oracle:thin:@115.90.212.20:10000:XE";
+	private final String USERNAME = "PSH08";
+	private final String PASSWORD = "PSH081234";
 	
 	public int save(Challenge challenge) {
 		Connection conn = null;
@@ -54,10 +60,10 @@ public class ChallengeDao {
 
 		try {
 			// 1) JDBC Driver 등록
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(DRIVER);
 			System.out.println("Driver 등록!");
 			// 2) Connection 객체 생성 (DB와 연결 -> URL, 사용자이름, 비밀번호)
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			System.out.println("Connection 객체 생성!");
 			// 로직 처음부터 만드는 거라 AutoCommit 끄기 
 			conn.setAutoCommit(false);
@@ -123,9 +129,9 @@ public class ChallengeDao {
 			
 		try {
 			// 1) JDBC Driver 등록
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(DRIVER);
 			// 2) Connection 객체 생성
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");			
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);			
 			
 			// 3) Statement 객체 생성
 			stmt = conn.createStatement();
@@ -198,9 +204,9 @@ public class ChallengeDao {
 		           + "ORDER BY ENROLL_DATE DESC";
 		 try {
 	    	  // 1) JDBC Drvier 등록
-	    	  Class.forName("oracle.jdbc.driver.OracleDriver");	
+	    	  Class.forName(DRIVER);	
 	    	  // 2) connection 객체 생성
-	    	  conn = DriverManager.getConnection("jdbc:oracle:thin:@115.90.212.20:10000:XE", "PSH08", "PSH081234");
+	    	  conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 	    	  // 3) Statement 객체 생성
 	    	  stmt = conn.createStatement();
 	    	  // 4, 5) SQL(SELECT)문을 실행 후 결과 받아오기
@@ -254,6 +260,61 @@ public class ChallengeDao {
 			
 			// 8) 결과 반환
 		return challenges;
+		
+	}
+	
+	public int update(TitleDTO td) {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = """
+						UPDATE
+						       TB_CHALLENGE
+						   SET
+						       TITLE = ?
+						 WHERE
+						       CHALLENGE_ID = ?
+						   AND
+						       TITLE = ?
+				     """;
+		
+		
+		try {
+			Class.forName(DRIVER);
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			conn.setAutoCommit(false);
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, td.getNewTitle());
+			pstmt.setString(2, td.getChallengeId());
+			pstmt.setString(3, td.getTitle());
+			
+			result = pstmt.executeUpdate();
+			
+			if(result > 0) {
+				conn.commit();
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
 		
 	}
 	

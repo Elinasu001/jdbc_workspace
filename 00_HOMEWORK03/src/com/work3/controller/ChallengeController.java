@@ -3,6 +3,7 @@ package com.work3.controller;
 import java.util.List;
 
 import com.work3.model.dao.ChallengeDao;
+import com.work3.model.dto.TitleDTO;
 import com.work3.model.vo.Challenge;
 
 public class ChallengeController {
@@ -38,6 +39,12 @@ public class ChallengeController {
 	public List<Challenge> findByKeyword(String keyword){
 		List<Challenge> challenges = new ChallengeDao().findByKeyword(keyword);
 		return challenges;
+	}
+	
+	public int update(String challengeId, String title, String newTitle) {
+		TitleDTO td = new TitleDTO(challengeId, title, newTitle);
+		int result = new ChallengeDao().update(td);
+		return result;
 	}
 	
 }

@@ -21,7 +21,7 @@ public class ChallengeView {
 			System.out.println("2. 챌린지 전체 조회");
 			System.out.println("3. 챌린지 아이디로 조회");
 			System.out.println("4. 챌린지 제목 키워드로 조회");
-			System.out.println("5. 챌린지 정보 변경");
+			System.out.println("5. 챌린지 제목 변경");
 			System.out.println("6. 챌린지 삭제");
 			System.out.println("9. 프로그램 종료하기");
 			System.out.println("번호를 선택해주세요 > ");
@@ -33,8 +33,8 @@ public class ChallengeView {
 			case 2 : findAll(); break;
 			case 3 : break;
 			case 4 : findByKeyword(); break;
-			case 5 : break;
-			case 6 : break;
+			case 5 : update(); break;
+			case 6 : delete(); break;
 			case 9 : System.out.println("프로그램을 종료합니다."); return;
 			default : System.out.println("잘못된 메뉴 선택입니다.");
 			}
@@ -113,5 +113,27 @@ public class ChallengeView {
 			    System.out.println(challenges.get(i));
 			}
 		}
+	}
+	
+	private void update() {
+		System.out.println("\n챌린지 제목 수정 서비스입니다.");
+		System.out.println("챌린지 아이디를 입력해주세요 > ");
+		String challengeId = sc.nextLine();
+		System.out.println("제목을 입력해주세요 > ");
+		String title = sc.nextLine();
+		System.out.println("수정할 제목을 입력해주세요 > ");
+		String newTitle = sc.nextLine();
+		
+		int result = cc.update(challengeId, title, newTitle);
+	
+		if(result > 0 ) {
+			System.out.println("제목 수정에 성공하셨습니다.");
+		} else {
+			System.out.println("제목 수정에 실패하셨습니다.");
+		}
+	}
+	
+	private void delete() {
+		
 	}
 }
