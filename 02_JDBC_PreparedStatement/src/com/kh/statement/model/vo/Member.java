@@ -7,7 +7,7 @@ import java.util.Objects;
  * VO(Value Object) => 값 객체
  * => 테이블의 "한 행"에 대한 "데이터를 기록"할 저장용 객체
  * 
- * VO가 가져야할 특성 == 불변성 (값이 변하면 안됨) WHY? SETTER => 무조건 생성장를 이용해서 담아 줘야됨
+ * VO가 가져야할 특성 == 불변성 (값이 변하면 안됨) WHY? SETTER => 무조건 생성자를 이용해서 담아 줘야됨
  * 
  *  VO클래스의 필드 구성 자체를 MEMBER테이블의 컬럼들과 유사하게 구성
  *  SEQUENCE 및 DEFAULT 값을 조건으로 사용하는 경우

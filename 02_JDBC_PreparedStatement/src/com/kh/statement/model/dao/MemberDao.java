@@ -140,7 +140,7 @@ public class MemberDao {
 
 	            conn.setAutoCommit(false);
 	            //3_2) 현재 미완성된 SQL문을 완성형태로 만들어주기
-	            // 위치홀더(?)에 값 바인딩
+	            // 파라미터를 바인딩하는 코드 : 위치홀더(?)에 값 바인딩
 	            pstmt.setString(1, member.getUserId());
 	            pstmt.setString(2, member.getUserPwd());
 	            pstmt.setString(3, member.getUserName());
@@ -207,8 +207,10 @@ public class MemberDao {
 	            // 6) 결과값 매핑
 				// 조회결과가 존재하는가를 먼저 판단한 뒤 
 				// 존재할 경우 한 행씩 접근해서 컬럼의 값을 뽑아서 VO필드에다가 매핑(시원하게!)
-	            while (rset.next()) {
+				// 매핑 = DB결과(ResultSet) 컬럼 값 ↔ 자바 객체(VO/DTO) 필드 연결
+				while (rset.next()) { // 여러 행 조회
 	            	/*
+	            	 * 생성자 방식 → 깔끔/짧음, 하지만 파라미터 순서 의존도가 높음.
 	                Member member = new Member(
 	                    rset.getInt("USERNO"),
 	                    rset.getString("USERID"),
@@ -218,6 +220,7 @@ public class MemberDao {
 	                    rset.getDate("ENROLLDATE")
 	                );
 	                */
+	            	//세터 방식 → 명확/유연, 하지만 코드가 길어짐
 	            	Member member = new Member();
 	                member.setUserNo(rset.getInt("USERNO"));
 	                member.setUserId(rset.getString("USERID"));
@@ -313,7 +316,7 @@ public class MemberDao {
 				// 4, 5) SQL문 실행 및 결과받기 (null은 있을 수 없음!!)
 				try(ResultSet rset = pstmt.executeQuery()){
 					// 6) rset에 값있나없나 판단 후 있다 VO필드에 매핑
-					if(rset.next()) {
+					if(rset.next()) {// 단일 행 조회
 						member = new Member(rset.getInt("USERNO")
 										   ,rset.getString("USERID")
 										   ,rset.getString("USERPWD")
@@ -351,7 +354,7 @@ public class MemberDao {
 						       USERNO
 						     , USERID
 						     , USERPWD
-						     , USERNAME
+						     , USERNAME	
 						     , EMAIL
 						     , ENROLLDATE
 						  FROM
