@@ -14,9 +14,7 @@ JDBC 학습하여 원리를 이해하고 문제해결능력을 향상시키는 �
 
 JAVA + [DATABASE(JDBC를 위한 DATABASE GITHUB 링크)](https://github.com/Elinasu001/sql_jdbc.git)
 
-JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
 
-<img width="504" height="auto" alt="jdbc_procedure_v2" src="https://github.com/user-attachments/assets/932e28ec-36cc-4313-ad46-2a6a93d22313" />
 
 ---
 
@@ -27,6 +25,10 @@ JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
   - 회원 이름 키워드로 조회
   - 회원 이름 정보 변경
   - 회원 탈퇴
+  - 
+JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
+
+<img width="504" height="auto" alt="jdbc_procedure_v2" src="https://github.com/user-attachments/assets/932e28ec-36cc-4313-ad46-2a6a93d22313" />
 
 ---
 
