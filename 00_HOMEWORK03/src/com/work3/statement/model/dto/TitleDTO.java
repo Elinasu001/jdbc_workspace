@@ -1,4 +1,4 @@
-package com.work3.model.dto;
+package com.work3.statement.model.dto;
 
 public class TitleDTO {
 	

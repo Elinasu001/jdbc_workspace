@@ -1,16 +1,17 @@
-package com.work3.model.dao;
+package com.work3.statement.model.dao;
+
+import static com.work3.common.JDBCTemplate. *;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.work3.model.dto.TitleDTO;
-import com.work3.model.vo.Challenge;
+import com.work3.statement.model.dto.TitleDTO;
+import com.work3.statement.model.vo.Challenge;
 
 public class ChallengeDao {
 	private final String DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -18,41 +19,106 @@ public class ChallengeDao {
 	private final String USERNAME = "PSH08";
 	private final String PASSWORD = "PSH081234";
 	
-	public int save(Challenge challenge) {
-		Connection conn = null;
+//	public int save(Challenge challenge) {
+//		Connection conn = null;
+//		PreparedStatement pstmt = null;
+//		int result = 0;
+//		
+//		String sql = """
+//						INSERT
+//						  INTO
+//						       TB_CHALLENGE
+//						VALUES
+//						       (
+//						       SEQ_CHALLENGE.NEXTVAL
+//						     , ?
+//						     , ?
+//						     , ?
+//						     , ?
+//						     , ?
+//						     , ?
+//						     , ?
+//						     , SYSDATE
+//						       )
+//				     """;
+//		
+//		//TO_DATE(?, 'YYYY-MM-DD')
+//		
+//		try {
+//			// 1) JDBC Driver 등록
+//			Class.forName(DRIVER);
+//			System.out.println("Driver 등록!");
+//			// 2) Connection 객체 생성 (DB와 연결 -> URL, 사용자이름, 비밀번호)
+//			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+//			System.out.println("Connection 객체 생성!");
+//			// 로직 처음부터 만드는 거라 AutoCommit 끄기 
+//			conn.setAutoCommit(false);
+//			// 3) Statement 객체 생성
+//			pstmt = conn.prepareStatement(sql);
+//			
+//			pstmt.setString(1, challenge.getChallengeId());
+//			pstmt.setString(2, challenge.getTitle());
+//			pstmt.setString(3, challenge.getDesc());
+//			pstmt.setString(4, challenge.getStartDate());
+//			pstmt.setString(5, challenge.getEndDate());
+//			pstmt.setInt(6, challenge.getRewardPoint());
+//			pstmt.setInt(7, challenge.getCreatorUserNo());
+//			
+//			// 4, 5) DB에 완성된 SQL문 전달하면서 실행도 하고 결과도 받고
+//			result = pstmt.executeUpdate();
+//			System.out.println("SQL문 실행");
+//			
+//			// 6) 트래잭션 처리
+//			if(result > 0) {
+//				conn.commit();
+//			}
+//			
+//		} catch(ClassNotFoundException e) {
+//			e.printStackTrace();
+//		} catch(SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			
+//			// 7) 사용이 모두 끝난 JDBC용 객체 자원반납
+//			try {
+//				if(pstmt != null) pstmt.close();
+//			} catch(SQLException e) {
+//				e.printStackTrace();
+//			}
+//			
+//			try {
+//				if(conn != null) conn.close();
+//			} catch(SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		// 8) 결과반환
+//		return result;
+//	}
+	
+	
+	public int save(Connection conn, Challenge challenge) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		
 		String sql = """
 						INSERT
 						  INTO
 						       TB_CHALLENGE
 						VALUES
-						       (
-						       SEQ_CHALLENGE.NEXTVAL
-						     , ?
-						     , ?
-						     , ?
-						     , ?
-						     , ?
-						     , ?
-						     , ?
-						     , SYSDATE
-						       )
-				     """;
-		
-		//TO_DATE(?, 'YYYY-MM-DD')
+							   (
+							   SEQ_CHALLENGE.NEXTVAL
+							 , ?
+							 , ?
+							 , ?
+							 , ?
+							 , ?
+							 , ?
+							 , ?
+							 , SYSDATE
+							   )
+					 """;
 		
 		try {
-			// 1) JDBC Driver 등록
-			Class.forName(DRIVER);
-			System.out.println("Driver 등록!");
-			// 2) Connection 객체 생성 (DB와 연결 -> URL, 사용자이름, 비밀번호)
-			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			System.out.println("Connection 객체 생성!");
-			// 로직 처음부터 만드는 거라 AutoCommit 끄기 
-			conn.setAutoCommit(false);
-			// 3) Statement 객체 생성
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, challenge.getChallengeId());
@@ -61,39 +127,20 @@ public class ChallengeDao {
 			pstmt.setString(4, challenge.getStartDate());
 			pstmt.setString(5, challenge.getEndDate());
 			pstmt.setInt(6, challenge.getRewardPoint());
-			pstmt.setInt(7, challenge.getCreatorUserNo());
+			pstmt.setInt(7,  challenge.getCreatorUserNo());
 			
-			// 4, 5) DB에 완성된 SQL문 전달하면서 실행도 하고 결과도 받고
 			result = pstmt.executeUpdate();
-			System.out.println("SQL문 실행");
 			
-			// 6) 트래잭션 처리
-			if(result > 0) {
-				conn.commit();
-			}
-			
-		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			
-			// 7) 사용이 모두 끝난 JDBC용 객체 자원반납
-			try {
-				if(pstmt != null) pstmt.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(conn != null) conn.close();
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
+			close(pstmt);
 		}
-		// 8) 결과반환
+		
 		return result;
+		
 	}
+	
 	
 	public List<Challenge> findAll(){
 		Connection conn = null;

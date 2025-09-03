@@ -1,11 +1,10 @@
-package com.work3.view;
+package com.work3.statement.view;
 
-import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Scanner;
 
-import com.work3.controller.ChallengeController;
-import com.work3.model.vo.Challenge;
+import com.work3.statement.controller.ChallengeController;
+import com.work3.statement.model.vo.Challenge;
 
 public class ChallengeView {
 	private Scanner sc = new Scanner(System.in);

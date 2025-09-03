@@ -1,4 +1,4 @@
-package com.work3.model.vo;
+package com.work3.statement.model.vo;
 
 import java.sql.Date;
 import java.util.Objects;

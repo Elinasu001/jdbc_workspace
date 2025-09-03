@@ -1,4 +1,4 @@
-package com.work3.run;
+package com.work3.statement.run;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

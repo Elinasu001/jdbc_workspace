@@ -1,11 +1,12 @@
-package com.work3.controller;
+package com.work3.statement.controller;
 
 
 import java.util.List;
 
-import com.work3.model.dao.ChallengeDao;
-import com.work3.model.dto.TitleDTO;
-import com.work3.model.vo.Challenge;
+import com.work3.statement.model.dao.ChallengeDao;
+import com.work3.statement.model.dto.TitleDTO;
+import com.work3.statement.model.service.ChallengeService;
+import com.work3.statement.model.vo.Challenge;
 
 public class ChallengeController {
 	
@@ -25,7 +26,7 @@ public class ChallengeController {
 		
 		Challenge challenge = new Challenge(challengeId, title, desc, startDate, endDate, rewardPoint, creatorUserNo);
 		
-		int result = new ChallengeDao().save(challenge);
+		int result = new ChallengeService().save(challenge);
 		
 		return result;
 	}
