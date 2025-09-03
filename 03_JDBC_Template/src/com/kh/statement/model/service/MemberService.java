@@ -118,7 +118,7 @@ public class MemberService {
 		// 비밀번호 수정
 		// UPDATE MEMBER SET USERPWD = 머시기 WHERE USERID = 머시기 AND USERPWD = 머시기
 		if(pd.getNewPassword().length() > 20) { // 굳이 DAO 갈 필요가 없기 때문에 여기서 처리
-			//throw new RuntimeException("너무 긴 비밀번호입니다~~~."); 이단, 안배웠으니 return 0; 처리
+			//throw new RuntimeException("너무 긴 비밀번호입니다~~~."); //일단, 안배웠으니 return 0; 처리
 			return 0;
 		}
 		Member member = new MemberDao().findById(conn, pd.getUserId());
