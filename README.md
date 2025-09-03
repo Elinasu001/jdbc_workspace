@@ -14,7 +14,7 @@ JDBC 학습하여 원리를 이해하고 문제해결능력을 향상시키는 �
 
 JAVA + [DATABASE(JDBC를 위한 DATABASE GITHUB 링크)](https://github.com/Elinasu001/sql_jdbc.git)
 
-
+JDBC + MVC
 
 ---
 
