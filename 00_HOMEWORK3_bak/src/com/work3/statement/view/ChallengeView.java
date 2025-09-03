@@ -30,7 +30,7 @@ public class ChallengeView {
 			switch(menuNo) {
 			case 1 : save(); break;
 			case 2 : findAll(); break;
-			case 3 : findById(); break;
+			case 3 : break;
 			case 4 : findByKeyword(); break;
 			case 5 : update(); break;
 			case 6 : delete(); break;
@@ -94,27 +94,6 @@ public class ChallengeView {
 			    System.out.println();
 			});
 			
-		}
-	}
-	
-	private void findById() {
-		System.out.println("아이디로 검색 서비스입니다.");
-		System.out.println("아이디를 입력해주세요 > ");
-		String challengeId = sc.nextLine();
-		
-		Challenge challenge = cc.findById(challengeId);
-		
-		if(challenge != null) {
-			System.out.println("챌린지 아이디 : " + challenge.getChallengeId());
-			System.out.println("제목 : " + challenge.getTitle());
-			System.out.println("설명 : " + challenge.getDesc());
-			System.out.println("시작날짜 : " + challenge.getStartDate());
-			System.out.println("종료날짜 : " + challenge.getEndDate());
-			System.out.println("보상 포인트 : " + challenge.getRewardPoint());
-			System.out.println("유저 번호 : " + challenge.getCreatorUserNo());
-			System.out.println("생성일 : " + challenge.getEnrollDate());
-		}else{
-			System.out.println("존재하지 않는 아이디 입니다.");
 		}
 	}
 	

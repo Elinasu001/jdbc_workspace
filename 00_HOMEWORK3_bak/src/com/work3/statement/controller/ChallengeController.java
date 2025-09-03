@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.work3.statement.model.dao.ChallengeDao;
 import com.work3.statement.model.dto.TitleDTO;
-import com.work3.statement.model.service.ChallengeService;
 import com.work3.statement.model.vo.Challenge;
 
 public class ChallengeController {
@@ -22,70 +21,41 @@ public class ChallengeController {
 	 * @param creatorUserNo
 	 * @return
 	 */
-	public int save(String challengeId, String title, String desc, String startDate, String endDate, int rewardPoint, int creatorUserNo) {
+public int save(String challengeId, String title, String desc, String startDate, String endDate, int rewardPoint, int creatorUserNo) {
 		
-		// 데이터 가공
 		Challenge challenge = new Challenge(challengeId, title, desc, startDate, endDate, rewardPoint, creatorUserNo);
 		
-		// Service 호출
-		int result = new ChallengeService().save(challenge);
+		int result = new ChallengeDao().save(challenge);
 		
-		// View로 결과 반환
 		return result;
 	}
 	
 	public List<Challenge> findAll(){
 		
-		// Service 호출
-		List<Challenge> challenges = new ChallengeService().findAll();
+		List<Challenge> challenges = new ChallengeDao().findAll();
 		
-		// View로 결과 반환
 		return challenges;
 	}
 	
-	public Challenge findById(String challengeId) {
-		
-		// Service 호출
-		Challenge challenge = new ChallengeService().findById(challengeId);
-		
-		// View로 결과 반환
-		return challenge;
-	}
-	
 	public List<Challenge> findByKeyword(String keyword){
-		
-		// Service 호출
-		List<Challenge> challenges = new ChallengeService().findByKeyword(keyword);
-		
-		// View로 결과 반환
+		List<Challenge> challenges = new ChallengeDao().findByKeyword(keyword);
 		return challenges;
 	}
 	
 	public int update(String challengeId, String title, String newTitle) {
-		
-		// 데이터 가공
 		TitleDTO td = new TitleDTO(challengeId, title, newTitle);
-		
-		// Service 호출
-		int result = new ChallengeService().update(td);
-		
-		// View로 결과 반환
+		int result = new ChallengeDao().update(td);
 		return result;
 	}
 	
 	public int delete(String challengeId, int creatorUserNo) {
-		
-		// 데이터 가공
 		Challenge challenge = new Challenge();
 		
-		// 데이터 가공_생성자 x -> setter로 넣기
 		challenge.setChallengeId(challengeId);
 		challenge.setCreatorUserNo(creatorUserNo);
 		
-		// Service 호출
-		int result = new ChallengeService().delete(challenge);
+		int result = new ChallengeDao().delete(challenge);
 		
-		// View로 결과 반환
 		return result;
 	}
 	
