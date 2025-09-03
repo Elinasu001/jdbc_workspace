@@ -54,7 +54,7 @@ public class BoardView {
 			sc.nextLine();
 			
 			switch(menuNo) {
-			case 1: break;
+			case 1: selectBoard(); break;
 			case 2: insertBoard(); break;
 			case 3: break;
 			case 9: System.out.println("잘가시오~"); break;
@@ -94,6 +94,7 @@ public class BoardView {
 		List<Board> boards = bc.selectBoardList();
 		
 		if(!boards.isEmpty()) {
+			// 향상된 for문 사용 가능
 			boards.stream().map(b -> "\n게시글번호 : " + b.getBoardNo()
 								  + "\t제목 : " + b.getBoardTitle()
 								  +"\t\t작성자 : " + b.getBoardWriter()
@@ -105,6 +106,40 @@ public class BoardView {
 			System.out.println("게시글이 존재하지 않습니다.");
 			System.out.println("첫 게시글의 주인공이 되어보세요!");
 		}
+	}
+	
+	
+	private void selectBoard() {
+		System.out.println("게 시 글 상 세 조 회 서 비 스 입 니 다.");
+		System.out.println("조회할 게시글 번호를 입력하세요 > ");
+		int boardNo = sc.nextInt();
+		sc.nextLine();
+		
+		// 하나 들고옴
+		Board board = bc.selectBoard(boardNo);
+		
+		if(board != null) {
+			// 하나만 조회 되는 거라 반복문 필요 없음.
+			System.out.println("\n\n 제목 : " + board.getBoardTitle());
+			System.out.println("\n\n 작성자 : " + board.getBoardWriter());
+			System.out.println("\n\n 작성일 : " + board.getCreateDate());
+			System.out.println("\n\n 본문 : " + board.getBoardContent());
+			System.out.println("----------------------------------------");
+			System.out.println(board.getBoardContent());
+			System.out.println("----------------------------------------");
+			
+		} else {
+			System.out.println("존재하지 않는 게시글 번호입니다.");
+		}
+		
+		while(true) {
+			System.out.println("목록으로 돌아가실려면 돌아가기를 입력하세요.");
+			String exit = sc.nextLine();
+			if("돌아가기".equals(exit)) {
+				return;
+			}
+		}
+		
 	}
 	
 	

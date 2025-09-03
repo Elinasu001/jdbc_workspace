@@ -37,10 +37,10 @@ public class BoardDAO {
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			
 			pstmt.setString(1, board.getBoardTitle());
 			pstmt.setString(2, board.getBoardContent());
 			pstmt.setInt(3, Integer.parseInt(board.getBoardWriter())); // 파싱  writer string 을 int이 userno 로 받아야 되기 때문
+			
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -79,8 +79,8 @@ public class BoardDAO {
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			
 			rset = pstmt.executeQuery();
+			
 			while(rset.next()) {
 				Board board = new Board(rset.getInt("BOARD_NO")
 						               ,rset.getString("BOARD_TITLE")
@@ -101,11 +101,53 @@ public class BoardDAO {
 		return boards;
 	}
 	
-	
-	
-	
-	
-	
+	public Board selectBoard(Connection conn, int boardNo) {
+		Board board = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		//ANSI 구문
+		String sql = """
+						SELECT
+						       BOARD_NO
+						     , BOARD_TITLE
+						     , BOARD_CONTENT
+						     , USERID
+						     , CREATE_DATE
+						     , DELETE_YN
+				  		  FROM
+				  		  	   BOARD
+				  		  JOIN
+						       MEMBER ON (USERNO = BOARD_WRITER)
+						 WHERE
+						       DELETE_YN = 'N'
+						   AND
+						       BOARD_NO = ?
+					 """;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				board = new Board(rset.getInt("BOARD_NO")
+						         ,rset.getString("BOARD_TITLE")
+						         ,rset.getString("BOARD_CONTENT")
+						         ,rset.getString("USERID")
+						         ,rset.getDate("CREATE_DATE")
+						         ,rset.getString("DELETE_YN"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return board;
+	}
 	
 	
 }

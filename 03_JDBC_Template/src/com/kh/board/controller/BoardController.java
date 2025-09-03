@@ -22,4 +22,8 @@ public class BoardController {
 		return boards;
 	}
 	
+	public Board selectBoard(int boardNo) {
+		return new BoardService().selectBoard(boardNo);
+	}
+	
 }

@@ -66,4 +66,20 @@ public class BoardService {
 		
 		return boards;
 	}
+	
+	public Board selectBoard(int boardNo) {
+		
+		// boardNo 시퀀스 가지고 만듦.... => 1부터 시작, 숫자 0 이하값 들어오면 갈 필요 없음
+		// DB가면 돈 듦... => if 조건절 사용하기.
+		
+		Board board = null;
+		
+		if(boardNo > 0) {
+			board = new BoardDAO().selectBoard(conn, boardNo);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return board;
+	}
 }
