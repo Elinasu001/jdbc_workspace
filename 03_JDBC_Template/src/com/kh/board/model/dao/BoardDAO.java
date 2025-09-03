@@ -2,12 +2,16 @@ package com.kh.board.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.board.model.vo.Board;
 import com.kh.common.JDBCTemplate;
 
 public class BoardDAO {
+	
 	public int insertBoard(Connection conn, Board board) {
 		// 0) 변수 선언
 		PreparedStatement pstmt = null;
@@ -46,4 +50,62 @@ public class BoardDAO {
 		}
 		return result;
 	}
+	
+	public List<Board> selectBoardList(Connection conn){
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Board> boards = new ArrayList();
+		
+		// ORACLE 구문
+		String sql = """
+						SELECT
+						       BOARD_NO
+						     , BOARD_TITLE
+						     , USERID
+						     , CREATE_DATE
+						  FROM
+						       BOARD
+						     , MEMBER
+						 WHERE
+						       BOARD_WRITER = USERNO
+						   AND
+						       DELETE_YN = 'N'
+						 ORDER
+						    BY
+						       BOARD_NO DESC
+				     """;
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Board board = new Board(rset.getInt("BOARD_NO")
+						               ,rset.getString("BOARD_TITLE")
+						               ,null
+						               ,rset.getString("USERID")
+						               ,rset.getDate("CREATE_DATE")
+						               ,null);
+				boards.add(board);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return boards;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

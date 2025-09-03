@@ -1,6 +1,7 @@
 package com.kh.board.model.service;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.kh.board.model.dao.BoardDAO;
 import com.kh.board.model.dto.BoardDTO;
@@ -33,15 +34,16 @@ public class BoardService {
 		// 2. 인증 / 인가
 		///new BoardDAO().searchId(conn, bd.getBoardWriter()); 안됨 why? 아이디를 가지고 회원 조회 하는 건 이미 MemberDao에 만들어 놨음
 		Member member = new MemberDao().findById(conn, bd.getBoardWriter()); // 있으면 주소값 담기고 없으면 null 
-		
-		if(member != null) {
-			int userNo = member.getUserNo();
-			// 3. 데이터 가공  / 생성
-			Board board = new Board(0,
+		// ↑ bd.getBoardWriter() 안에 들어있는 "아이디(문자열)"로 MEMBER 테이블을 조회
+		//있으면 Member 객체, 없으면 null
+		if(member != null) {					// ← 왜 꼭 != null?
+			int userNo = member.getUserNo();	// 	  null이면 getUserNo()에서 NPE 터짐
+			// 3. 데이터 가공  / 생성				//    또한, 존재하지 않는 회원이면 FK 위반(ORA-02291)로 INSERT 실패 ==> 존재하는 회원인지 확인 → NPE 방지 + FK 무결성 보장.
+			Board board = new Board(0,					// 게시글 PK는 DB에서 시퀀스(SEQ_BNO.NEXTVAL) 로 생성될 예정 // “아직 미발급” 상태를 의미하는 플레이스홀더로 0을 넣음
 									  bd.getBoardTitle(),
 									  bd.getBoardContent(),
-									  String.valueOf(userNo), // int 자료형을 String으로 바꾸고 싶을 경우
-									  null,
+									  String.valueOf(userNo), // (작성자 필드 타입이 String으로 설계되어있어 DB의 숫자키 (USERNO)를 문자열로 임시 변환 , int 자료형을 String으로 바꾸고 싶을 경우
+									  null,					  // 만약 , 다시 설계한다면?  DB 컬럼 BOARD_WRITER가 NUMBER(= USERNO FK)라면, 도메인 모델도 int/Integer로 맞추는 게 베스트
 									  null);
 			
 		  result = new BoardDAO().insertBoard(conn, board);
@@ -54,5 +56,14 @@ public class BoardService {
 		JDBCTemplate.close(conn);
 		
 		return result;
+	}
+	
+	public List<Board> selectBoardList(){
+		
+		List<Board> boards = new BoardDAO().selectBoardList(conn);
+		
+		JDBCTemplate.close(conn);
+		
+		return boards;
 	}
 }

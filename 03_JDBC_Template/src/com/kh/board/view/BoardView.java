@@ -1,9 +1,11 @@
 package com.kh.board.view;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.kh.board.controller.BoardController;
 import com.kh.board.model.dto.BoardDTO;
+import com.kh.board.model.vo.Board;
 
 /*
  * 일반적으로 CRUD 작업의 메소드를 지을 때 메소드명 예시!)
@@ -38,6 +40,8 @@ public class BoardView {
 		while(true) {
 			System.out.println("게시판 서비스입니다!");
 			// 전체 게시글 목록 조회
+			
+			selectBoardList();
 			
 			System.out.println("\n=========================================");
 			System.out.println("1. 게시글 상세조회");
@@ -79,10 +83,30 @@ public class BoardView {
 		} else {
 			System.out.println("게시글 작성 실패 ");
 		}
-		System.
-		out.println();
+		System.out.println();
 		System.out.println();
 		
 	}
+	
+	private void selectBoardList() {
+		System.out.println();
+		
+		List<Board> boards = bc.selectBoardList();
+		
+		if(!boards.isEmpty()) {
+			boards.stream().map(b -> "\n게시글번호 : " + b.getBoardNo()
+								  + "\t제목 : " + b.getBoardTitle()
+								  +"\t\t작성자 : " + b.getBoardWriter()
+								  +"\t작성일 : " + b.getCreateDate())
+						   .forEach(System.out::print);
+			
+			
+		} else {
+			System.out.println("게시글이 존재하지 않습니다.");
+			System.out.println("첫 게시글의 주인공이 되어보세요!");
+		}
+	}
+	
+	
 	
 }
