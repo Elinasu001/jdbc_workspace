@@ -62,6 +62,9 @@ public class BoardService {
 		
 		List<Board> boards = new BoardDAO().selectBoardList(conn);
 		
+		new BoardDAO().outputHTML(conn);
+		
+		
 		JDBCTemplate.close(conn);
 		
 		return boards;

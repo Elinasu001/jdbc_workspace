@@ -144,7 +144,6 @@ public class BoardView {
 	
 	
 	private void deleteBoard() {
-		
 		System.out.println("게시판 번호를 입력해주세요 > ");
 		int boardNo = sc.nextInt();
 		sc.nextLine();
@@ -154,7 +153,6 @@ public class BoardView {
 		} else {
 			System.out.println("삭제에 실패하셔습니다.");
 		}
-		
 	}
 	
 	
