@@ -12,6 +12,7 @@ public class BoardController {
 		
 		//return new BoardService().insertBoard(bd); 도 가능
 		int result = new BoardService().insertBoard(bd);
+		
 		return result;
 	}
 	
@@ -23,7 +24,14 @@ public class BoardController {
 	}
 	
 	public Board selectBoard(int boardNo) {
+		
 		return new BoardService().selectBoard(boardNo);
+	
 	}
+	
+	public int deleteBoard(int boardNo) {
+		return new BoardService().deleteBoard(boardNo);
+	}
+	
 	
 }

@@ -56,7 +56,7 @@ public class BoardView {
 			switch(menuNo) {
 			case 1: selectBoard(); break;
 			case 2: insertBoard(); break;
-			case 3: break;
+			case 3: deleteBoard(); break;
 			case 9: System.out.println("잘가시오~"); break;
 			}
 		}
@@ -123,7 +123,7 @@ public class BoardView {
 			System.out.println("\n\n 제목 : " + board.getBoardTitle());
 			System.out.println("\n\n 작성자 : " + board.getBoardWriter());
 			System.out.println("\n\n 작성일 : " + board.getCreateDate());
-			System.out.println("\n\n 본문 : " + board.getBoardContent());
+			System.out.println("\n\n 본문 : ");
 			System.out.println("----------------------------------------");
 			System.out.println(board.getBoardContent());
 			System.out.println("----------------------------------------");
@@ -133,7 +133,7 @@ public class BoardView {
 		}
 		
 		while(true) {
-			System.out.println("목록으로 돌아가실려면 돌아가기를 입력하세요.");
+			System.out.println("목록으로 돌아가실려면 '돌아가기'를 입력하세요. > ");
 			String exit = sc.nextLine();
 			if("돌아가기".equals(exit)) {
 				return;
@@ -142,6 +142,20 @@ public class BoardView {
 		
 	}
 	
+	
+	private void deleteBoard() {
+		
+		System.out.println("게시판 번호를 입력해주세요 > ");
+		int boardNo = sc.nextInt();
+		sc.nextLine();
+		
+		if(bc.deleteBoard(boardNo) > 0) {
+			System.out.println("지우기 성공~");
+		} else {
+			System.out.println("삭제에 실패하셔습니다.");
+		}
+		
+	}
 	
 	
 }

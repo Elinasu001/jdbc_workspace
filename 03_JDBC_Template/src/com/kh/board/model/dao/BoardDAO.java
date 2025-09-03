@@ -149,5 +149,26 @@ public class BoardDAO {
 		return board;
 	}
 	
+	public int deleteBoard(Connection conn, int boardNo) {
+		
+
+		try(PreparedStatement pstmt = conn.prepareStatement("""
+																UPDATE
+																       BOARD
+																   SET
+																       DELETE_YN = 'Y'
+																 WHERE
+																       BOARD_NO = ?
+															""")){
+			
+			pstmt.setInt(1, boardNo);
+			return pstmt.executeUpdate();
+	} catch(SQLException e) {
+		e.printStackTrace();
+	}
+		
+	return 0;
+	}
+	
 	
 }
