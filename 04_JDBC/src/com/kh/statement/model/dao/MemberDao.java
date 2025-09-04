@@ -1,14 +1,20 @@
 package com.kh.statement.model.dao;
 
 // static 붙이면 JDBCTemplate 사용안하고 메소드만 호출해서 사용할 수 있음.
-import static com.kh.common.JDBCTemplate.*;
+import static com.kh.common.JDBCTemplate.close;
+import static com.kh.common.JDBCTemplate.getConnection;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
+import java.util.Properties;
 
 import com.kh.common.JDBCTemplate;
 import com.kh.statement.model.dto.PasswordDTO;
@@ -16,24 +22,36 @@ import com.kh.statement.model.vo.Member;
 
 public class MemberDao {
 	
+	private Properties prop = new Properties();
+	
+	// 메소드 호출할 때마다
+	// xml 파일로부터 Properties 객체로 입력받는 코드를 써야함 중복이다.
+	// new MemberDao().xxx
+	public MemberDao() {
+		try {
+			prop.loadFromXML(new FileInputStream("resources/member-mapper.xml"));// 도메인, 매핑할 목적 암묵정 명
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+	
 	public int save(Connection conn, Member member) {
 		// 0) 필요한 변수 세팅
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String sql = """
-						INSERT
-						  INTO
-						       MEMBER
-						VALUES
-						       (
-						       SEQ_USERNO.NEXTVAL
-						     , ?
-						     , ?
-						     , ?
-						     , ?
-						     , SYSDATE
-						       )
-				     """;
+		
+		// 상단 기본생성자로 생성
+		/*
+		Properties prop = new Properties(); 
+		try {
+			prop.loadFromXML(new FileInputStream("resources/member-mapper.xml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+		
+		String sql = prop.getProperty("save");
+		
 		// 1) Driver 등록
 		// 2) Connection 객체 생성
 		// 0~2) JDBCTemplate 반영
@@ -69,20 +87,17 @@ public class MemberDao {
 		List<Member> members = new ArrayList();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;	// 절대 null일 수 없음
-		String sql = """
-						SELECT
-						       USERNO
-						     , USERID
-						     , USERPWD
-						     , USERNAME
-						     , EMAIL
-						     , ENROLLDATE
-						  FROM
-						       MEMBER
-						 ORDER
-						    BY
-						       ENROLLDATE DESC
-				     """;
+		
+		// 상단 기본생성자로 생성
+		/*
+		Properties prop = new Properties(); 
+		try {
+			prop.loadFromXML(new FileInputStream("resources/member-mapper.xml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+		String sql = prop.getProperty("findAll");
 		
 		
 		try {
@@ -120,19 +135,8 @@ public class MemberDao {
 		Member member = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String sql = """
-				        SELECT
-				               USERNO
-				             , USERID
-				             , USERPWD
-				             , USERNAME
-				             , EMAIL
-				             , ENROLLDATE
-				          FROM
-				               MEMBER
-				         WHERE
-				               USERID = ?
-					""";
+		
+		String sql = prop.getProperty("findById");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -162,19 +166,8 @@ public class MemberDao {
 		List<Member> members = new ArrayList();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null; // 셀렉문 실행할
-		String sql = """
-						SELECT
-						       USERNO
-						     , USERID
-						     , USERPWD
-						     , USERNAME
-						     , EMAIL
-						     , ENROLLDATE
-						  FROM
-						       MEMBER
-						 WHERE
-						       USERNAME LIKE '%'||?||'%'
-					 """;
+		
+		String sql = prop.getProperty("findByKeyword");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -203,23 +196,14 @@ public class MemberDao {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		
-		String sql = """
-						UPDATE
-						       MEMBER
-						   SET
-						       USERPWD = ?
-						 WHERE
-						       USERID = ?
-						   AND
-						       USERPWD = ?
-				     """;
+		String sql = prop.getProperty("update");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, pd.getNewPassword());
 			pstmt.setString(2, pd.getUserId());
-			pstmt.setString(2, pd.getUserPwd());
+			pstmt.setString(3, pd.getUserPwd());
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -235,15 +219,7 @@ public class MemberDao {
 		// 0)
 		int result = 0;
 		PreparedStatement pstmt = null;
-		String sql = """
-						DELETE
-						  FROM
-						       MEMBER
-						 WHERE
-						       USERID = ?
-						   AND
-						       USERPWD = ?
-				     """;
+		String sql = prop.getProperty("delete");
 		// 1 ~ 2) 앞에서 다해왔음
 		
 		try {
