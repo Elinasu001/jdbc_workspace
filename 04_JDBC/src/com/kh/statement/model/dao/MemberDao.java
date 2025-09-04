@@ -29,7 +29,7 @@ public class MemberDao {
 	// new MemberDao().xxx
 	public MemberDao() {
 		try {
-			prop.loadFromXML(new FileInputStream("resources/member-mapper.xml"));// 도메인, 매핑할 목적 암묵정 명
+			prop.loadFromXML(new FileInputStream("resources/member-mapper.xml"));// 도메인, 매핑할 목적 암묵적인 명
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
