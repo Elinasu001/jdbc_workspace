@@ -36,7 +36,7 @@ public class MemberDao {
 	}
 	
 	public int save(Connection conn, Member member) {
-		// 0) 필요한 변수 세팅
+		
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -52,41 +52,30 @@ public class MemberDao {
 		
 		String sql = prop.getProperty("save");
 		
-		// 1) Driver 등록
-		// 2) Connection 객체 생성
-		// 0~2) JDBCTemplate 반영
 		
 		try {
-			// 3_1) PreparedStatment 객체 생성 (SQL문 미리보내기)
 			pstmt = conn.prepareStatement(sql);
-			// 3_2) 미완성된 SQL문일 경우 묶어줄 값전달하기 - 바인딩!
 			pstmt.setString(1, member.getUserId());
 			pstmt.setString(2, member.getUserPwd());
 			pstmt.setString(3, member.getUserName());
 			pstmt.setString(4, member.getEmail());
 			
-			// 4, 5) DB에 완성된 SQL문을 실행할 결과 (int)받기 (정수로 처리된 행의 개수가 들어옴)
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// 6) 트랜잭션 처리 MemberService에서
-			// 7_1) 할 일이 다 끝난 PreparedStatement 객체만 반납
 			close(pstmt);
-			// 7_2) Connection 자원반납 MemberService에서
 		}
 		
-		// 8) 결과반환 => MemberService에 반환
 		return result;
 	}
 	
 	public List<Member> findAll(Connection conn){
-		// 0) 필요한 변수 선언 먼저
-		// PreparedStatement, ResultSet, sql, List
+		
 		List<Member> members = new ArrayList();
 		PreparedStatement pstmt = null;
-		ResultSet rset = null;	// 절대 null일 수 없음
+		ResultSet rset = null;	
 		
 		// 상단 기본생성자로 생성
 		/*
@@ -101,14 +90,10 @@ public class MemberDao {
 		
 		
 		try {
-			// 3_1) prepareStatement 객체 생성(sql문을 인자로 전달하기)
 			pstmt = conn.prepareStatement(sql);
 			
-			// 4, 5) SQL(SELECT)을 실행 후 결과 (ResultSet) 받기
 			rset = pstmt.executeQuery();
 			
-			// 6) 조회결과 여부 판단 후 
-			//    컬럼값을 객체 필드에 매핑!
 			while(rset.next()) {
 				Member member = new Member(rset.getInt("USERNO")
 						       			  ,rset.getString("USERID")
@@ -122,12 +107,10 @@ public class MemberDao {
 		} catch (SQLException e ) {
 			e.printStackTrace();
 		} finally {
-			// 7) 사용이 다 끝난 JDBC용 객체 반납
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
 		
-		// 8) 결과반환
 		return members;
 	}
 	
@@ -143,7 +126,7 @@ public class MemberDao {
 			pstmt.setString(1, userId);
 			rset = pstmt.executeQuery();
 			
-			if(rset.next()) { // 매핑!
+			if(rset.next()) {
 				member = new Member(rset.getInt("USERNO")
 						   		   ,rset.getString("USERID")
 						   		   ,rset.getString("USERPWD")
@@ -165,7 +148,7 @@ public class MemberDao {
 	public List<Member> findByKeyword(Connection conn, String keyword){
 		List<Member> members = new ArrayList();
 		PreparedStatement pstmt = null;
-		ResultSet rset = null; // 셀렉문 실행할
+		ResultSet rset = null; 
 		
 		String sql = prop.getProperty("findByKeyword");
 		
@@ -216,30 +199,22 @@ public class MemberDao {
 	}
 	
 	public int delete(Connection conn, Member member) {
-		// 0)
 		int result = 0;
 		PreparedStatement pstmt = null;
 		String sql = prop.getProperty("delete");
-		// 1 ~ 2) 앞에서 다해왔음
 		
 		try {
-			// 3_1)
 			pstmt = conn.prepareStatement(sql);
 			
-			// 3_2)
 			pstmt.setString(1, member.getUserId());
 			pstmt.setString(2, member.getUserPwd());
-			// 4, 5)
 			result = pstmt.executeUpdate();
-			//6) Service로 돌아가서 진행
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// 7)
 			JDBCTemplate.close(pstmt);
 		}
 		
-		// 8)
 		return result;
 	
 	}

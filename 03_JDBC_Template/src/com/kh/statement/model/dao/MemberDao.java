@@ -219,7 +219,7 @@ public class MemberDao {
 			
 			pstmt.setString(1, pd.getNewPassword());
 			pstmt.setString(2, pd.getUserId());
-			pstmt.setString(2, pd.getUserPwd());
+			pstmt.setString(3, pd.getUserPwd());
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
