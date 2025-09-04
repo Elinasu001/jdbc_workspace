@@ -35,7 +35,7 @@ public class EmployeeView {
 			case 5: break;
 			case 6: break;
 			case 7: save(); break;
-			case 8: break;
+			case 8: update(); break;
 			case 9: break;
 			case 10: System.out.println("프로그램을 종료합니다."); return;
 			default: System.out.println("잘못된 메뉴 선택입니다.");
@@ -177,9 +177,9 @@ public class EmployeeView {
 	    int salary = sc.nextInt();
 	    sc.nextLine();
 	    
-	    Employee employee = new Employee(empName, empNo, email, phone, jobCode, salLevel, salary);
+//	    Employee employee = new Employee(empName, empNo, email, phone, jobCode, salLevel, salary);
 	    
-	    int result = ec.save(employee);
+	    int result = ec.save(empName, empNo, email, phone, jobCode, salLevel, salary);
 
 	    // 결과 출력
 	    if(result > 0) {
@@ -188,6 +188,32 @@ public class EmployeeView {
 	        System.out.println("사원 추가에 실패했습니다.");
 	    }
 	    System.out.println();
+	}
+	
+	private void update() {
+		System.out.println("\n정보 수정 서비스 입니다.");
+		System.out.println("사번을 입력해주세요 > ");
+		String empId = sc.nextLine();
+		
+		System.out.println("수정할 급여를 입력해주세요 > ");
+		int newSalary = sc.nextInt();
+		sc.nextLine();
+		
+		System.out.println("수정할 직급을 입력해주세요 > ");
+		String newJobName = sc.nextLine();
+		
+		System.out.println("수정할 부서를 입력해주세요 > ");
+		String newDeptTitle = sc.nextLine();
+		
+		int result = ec.update(empId, newSalary, newJobName, newDeptTitle);
+		
+		if(result > 0) { 
+			System.out.println("성공했습니다");
+			System.out.println("사원번호 : " + empId + ", 급여 : " + newSalary + ", 직급 : " + newJobName + ", 부서 :" + newDeptTitle);
+		} else {
+			System.out.println("실패했습니다");
+		}
+		
 	}
 	
 }

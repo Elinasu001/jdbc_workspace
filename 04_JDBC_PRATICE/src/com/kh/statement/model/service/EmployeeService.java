@@ -1,13 +1,15 @@
 package com.kh.statement.model.service;
 
-import static com.kh.common.JDBCTemplate. *;
+import static com.kh.common.JDBCTemplate.close;
+import static com.kh.common.JDBCTemplate.commit;
+import static com.kh.common.JDBCTemplate.getConnection;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.function.Function;
 
-import com.kh.common.JDBCTemplate;
 import com.kh.statement.model.dao.EmployeeDAO;
+import com.kh.statement.model.dto.EmployeeDTO;
 import com.kh.statement.model.vo.Employee;
 
 
@@ -59,6 +61,20 @@ public class EmployeeService {
 		close(conn);
 		
 		return result;
+	}
+	
+	public int update(EmployeeDTO ed) {
+		
+		int result = new EmployeeDAO().update(conn, ed);
+		
+		if(result > 0) {
+			commit(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+		
 	}
 
 }

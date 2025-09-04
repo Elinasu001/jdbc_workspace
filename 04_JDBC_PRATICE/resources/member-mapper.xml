@@ -137,14 +137,28 @@
 	</entry>
 	
 	<entry key="update">
-		UPDATE 
-		       EMPLOYEE
-		   SET 
-		       SALARY   = ?
-		     , JOB_CODE = ?
-		     , DEPT_CODE = ?
-		 WHERE 
-		       EMP_ID   = ?
+		UPDATE
+		       EMPLOYEE E
+		   SET
+		       SALARY    = ?
+		     , JOB_CODE  = (
+		               SELECT
+		                        J.JOB_CODE
+		                 FROM
+		                        JOB J
+		                WHERE
+		                        J.JOB_NAME = ?
+		           )
+	         , DEPT_CODE = (
+	               SELECT
+	                        D.DEPT_ID
+	                 FROM
+	                        DEPARTMENT D
+	                WHERE
+	                        D.DEPT_TITLE = ?
+	           )
+		 WHERE
+		       E.EMP_ID  = ?
 	</entry>
 	
 	<entry key="delete">

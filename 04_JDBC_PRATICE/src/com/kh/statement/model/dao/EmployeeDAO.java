@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.kh.statement.model.dto.EmployeeDTO;
 import com.kh.statement.model.vo.Employee;
 
 public class EmployeeDAO {
@@ -184,7 +185,28 @@ public class EmployeeDAO {
 			close(pstmt);
 		}
 		return result;
+	}
+	
+	public int update(Connection conn, EmployeeDTO ed) {
+		PreparedStatement pstmt = null;
+		int result = 0;
 		
+		String sql = prop.getProperty("update");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, ed.getNewSalary());
+			pstmt.setString(2, ed.getNewJobName());
+			pstmt.setString(3, ed.getNewDeptTitle());
+			pstmt.setString(4, ed.getEmpId());
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
 	}
 	
 }
