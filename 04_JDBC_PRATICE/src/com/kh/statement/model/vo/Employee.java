@@ -47,7 +47,17 @@ public class Employee {
 		this.entYn = entYn;
 	}
 	
-	
+	public Employee(String empName, String empNo, String email, String phone,
+			String jobCode, String salLevel, int salary) {
+		super();
+		this.empName = empName;
+		this.empNo = empNo;
+		this.email = email;
+		this.phone = phone;
+		this.jobCode = jobCode;
+		this.salLevel = salLevel;
+		this.salary = salary;
+	}
 	
 	
 	public Employee(String empId, String empName, String deptTitle, int salary) {
@@ -67,11 +77,11 @@ public class Employee {
 		this.jobName = jobName;
 	}
 	
-	public Employee(String empId, String empName, String deptCode) {
+	public Employee(String empId, String empName, String deptTitle) {
 		super();
 		this.empId = empId;
 		this.empName = empName;
-		this.deptCode = deptCode;
+		this.deptTitle = deptTitle;
 	}
 	
 	

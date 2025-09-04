@@ -34,7 +34,7 @@ public class EmployeeView {
 			case 4: findAllDetail(); break;
 			case 5: break;
 			case 6: break;
-			case 7: break;
+			case 7: save(); break;
 			case 8: break;
 			case 9: break;
 			case 10: System.out.println("프로그램을 종료합니다."); return;
@@ -76,14 +76,14 @@ public class EmployeeView {
 			employees.stream().forEach(employee ->{
 				System.out.print("사번 : " + employee.getEmpId()+ ", ");
 				System.out.print("\t사원명 : " + employee.getEmpName() + ", ");
-				System.out.print("\t부서코드 : " + employee.getDeptCode() + ", ");
+				System.out.print("\t부서명 : " + employee.getDeptTitle());
 				System.out.println();
 			});
 		}
 		
 	}
 	
-	public void findByJobEmployee() {
+	private void findByJobEmployee() {
 		
 		System.out.println("직급이 동일한 사원을 조회하는 서비스 입니다");
 		System.out.println("직급명을 입력해주세요 > ");
@@ -95,13 +95,14 @@ public class EmployeeView {
 			System.out.println("조회결과가 존재하지 않습니다.");
 		}else {
 			employees.stream().forEach(employee -> {
-				System.out.print("사원명 : " + employee.getEmpName() + ", ");
-				System.out.println("직급명 : " + employee.getJobName());
+				System.out.print("직급코드 : " + employee.getJobCode()+ ", ");
+				System.out.print("\t사원명 : " + employee.getEmpName() + ", ");
+				System.out.println("\t직급명 : " + employee.getJobName());
 			});
 		}
 	}
 	
-	public void findAllDetail() {
+	private void findAllDetail() {
 		System.out.println("\n상세 조회 서비스입니다.");
 		System.out.println("사번을 입력해주세요 > ");
 		String empId = sc.nextLine();
@@ -129,6 +130,64 @@ public class EmployeeView {
 			});
 
 		}
+	}
+	
+//	private void getHighSalaryEmployees() {
+//		
+//		System.out.println("\n급여가 높은 상위 다섯명 조회하는 프로그램입니다.");
+//		
+//		List<Employee> employees = ec.getHighSalaryEmployees();
+//		
+//		if(employees.isEmpty) {
+//			System.out.println("조회 결과에 실패하셨습니다.");
+//		}else {
+//			employees.stream().forEach(e-> {
+//				System.out.println(+ e.getEmpName() + " : " + e.getSalary());
+//				
+//				
+//			});
+//		
+//		}
+//		
+//	}
+	
+	private void save() {
+		System.out.println();
+	    System.out.println("=== 사원 추가 ===");
+
+	    System.out.print("사원명을 입력해주세요 > ");
+	    String empName = sc.nextLine();
+
+	    System.out.print("주민등록번호 예: 990101-1234567) > ");
+	    String empNo = sc.nextLine();
+
+	    System.out.print("이메일 > ");
+	    String email = sc.nextLine();
+
+	    System.out.print("전화번호 > ");
+	    String phone = sc.nextLine();
+
+	    System.out.print("직급코드 예: J1) > ");
+	    String jobCode = sc.nextLine();
+
+	    System.out.print("급여등급 예: S1) > ");
+	    String salLevel = sc.nextLine();
+
+	    System.out.print("급여 숫자) > ");
+	    int salary = sc.nextInt();
+	    sc.nextLine();
+	    
+	    Employee employee = new Employee(empName, empNo, email, phone, jobCode, salLevel, salary);
+	    
+	    int result = ec.save(employee);
+
+	    // 결과 출력
+	    if(result > 0) {
+	        System.out.println("사원 추가가 완료되었습니다.");
+	    } else {
+	        System.out.println("사원 추가에 실패했습니다.");
+	    }
+	    System.out.println();
 	}
 	
 }

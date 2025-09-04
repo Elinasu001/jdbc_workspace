@@ -30,4 +30,9 @@ public class EmployeeController {
 		return employees;
 	}
 	
+	public int save(Employee employee) {
+		int result = new EmployeeService().save(employee);
+		return result;
+	}
+	
 }

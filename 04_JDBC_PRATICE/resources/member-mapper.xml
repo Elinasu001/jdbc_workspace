@@ -10,43 +10,53 @@
 	
 	<entry key="findAll">
 		SELECT
-		       EMP_ID
-		     , EMP_NAME
-		     , SALARY
-		     , DEPT_TITLE
-		     , JOB_NAME
+		       E.EMP_ID
+		     , E.EMP_NAME
+		     , E.SALARY
+		     , D.DEPT_TITLE
+		     , J.JOB_NAME
 		 FROM
-		       EMPLOYEE
+		       EMPLOYEE E
 		 LEFT     
 		 JOIN
-		       DEPARTMENT ON (DEPT_CODE = DEPT_ID)
+		       DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
 		 JOIN  
-			   JOB USING (JOB_CODE)
+			   JOB J USING (JOB_CODE)
+		ORDER
+		   BY
+		       E.EMP_ID
 	</entry>
 	
 	<entry key="findByDmtEmployee">
 		SELECT	
-			   EMP_ID
-		     , EMP_NAME
-		     , DEPT_CODE
+			   E.EMP_ID
+		     , E.EMP_NAME
+		     , D.DEPT_TITLE
 		  FROM
-		       EMPLOYEE
+		       EMPLOYEE E
 		  JOIN
-		       DEPARTMENT ON (DEPT_CODE = DEPT_ID)
+		       DEPARTMENT D ON (E.DEPT_CODE = D.DEPT_ID)
 		 WHERE 
-		       DEPT_TITLE = ?
+		       D.DEPT_TITLE = ?
+		 ORDER
+		    BY
+		       E.EMP_ID
 	</entry>
 	
 	<entry key="findByJobEmployee">
 		SELECT
-			   JOB_NAME
-		     , EMP_NAME
+			   JOB_CODE
+		     , E.EMP_NAME
+			 , J.JOB_NAME
 		  FROM
-		       EMPLOYEE 
+		       EMPLOYEE E
 		  JOIN
-		       JOB USING (JOB_CODE)
+		       JOB J USING (JOB_CODE)
 		 WHERE 
-		       JOB_NAME = ?
+		       J.JOB_NAME = ?
+		ORDER
+		   BY 
+		       JOB_CODE
 	</entry>
 	
 	<entry key="findAllDetail">
@@ -99,7 +109,7 @@
 		OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY
 	</entry>
 	
-	<entry key="insert">
+	<entry key="save">
 		INSERT
 		  INTO
 		  	   EMPLOYEE
@@ -109,26 +119,20 @@
 		     , EMP_NO
 		     , EMAIL
 		     , PHONE
-		     , DEPT_CODE
 		     , JOB_CODE
 		     , SAL_LEVEL
 		     , SALARY
-		     , BONUS
-		     , HIRE_DATE  
 		       )
 		VALUES
 		 	   (
 			   SEQ_EID.NEXTVAL
-			 , '홍길길'
-			 , '631010-2653546'
-			 , 'kth04@kh.or.kr'
-			 , '01077607879'
-			 , 'D9'
-			 , 'J5'
-			 , 'S4'
-			 , 5000000
-			 , 100
-			 , SYSDATE
+			 , ?
+			 , ?
+			 , ?
+			 , ?
+			 , ?
+			 , ?
+			 , ?
 		 	   )
 	</entry>
 	
@@ -138,7 +142,7 @@
 		   SET 
 		       SALARY   = ?
 		     , JOB_CODE = ?
-		     , DEPT_CODE= ?
+		     , DEPT_CODE = ?
 		 WHERE 
 		       EMP_ID   = ?
 	</entry>
@@ -148,7 +152,7 @@
 		       EMPLOYEE
 		  SET
 		       ENT_DATE = ?
-		     , ENT_YN = ?
+		     , ENT_YN = 'Y'
 		 WHERE
 		       EMP_ID = ?
 	</entry>

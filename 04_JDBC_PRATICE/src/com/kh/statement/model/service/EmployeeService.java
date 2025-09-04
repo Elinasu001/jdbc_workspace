@@ -1,12 +1,12 @@
 package com.kh.statement.model.service;
 
-import static com.kh.common.JDBCTemplate.close;
-import static com.kh.common.JDBCTemplate.getConnection;
+import static com.kh.common.JDBCTemplate. *;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.function.Function;
 
+import com.kh.common.JDBCTemplate;
 import com.kh.statement.model.dao.EmployeeDAO;
 import com.kh.statement.model.vo.Employee;
 
@@ -18,6 +18,7 @@ public class EmployeeService {
 	public EmployeeService() {
 		this.conn = getConnection();
 	}
+	
 	
 	private <T> T executeQuery(Function<Connection, T> daoFunction){
 		
@@ -48,4 +49,16 @@ public class EmployeeService {
 		return executeQuery(conn -> new EmployeeDAO().findAllDetail(conn, empId));
 	}
 	
+	public int save(Employee employee) {
+		
+		int result = new EmployeeDAO().save(conn, employee);
+		
+		if(result > 0) {
+			commit(conn);
+		}
+		close(conn);
+		
+		return result;
+	}
+
 }

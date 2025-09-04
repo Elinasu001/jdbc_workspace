@@ -79,7 +79,7 @@ public class EmployeeDAO {
 	            */
 				employees.add(new Employee(rset.getString("EMP_ID")
 						                  ,rset.getString("EMP_NAME")
-						                  ,rset.getString("DEPT_CODE")));
+						                  ,rset.getString("DEPT_TITLE")));
 	            
 			}
 		} catch (SQLException e) {
@@ -105,8 +105,9 @@ public class EmployeeDAO {
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				Employee employee = new Employee();
-				employee.setJobName(rset.getString("JOB_NAME"));
+				employee.setJobCode(rset.getString("JOB_CODE"));
 				employee.setEmpName(rset.getString("EMP_NAME"));
+				employee.setJobName(rset.getString("JOB_NAME"));
 				employees.add(employee);
 			}
 			
@@ -157,6 +158,33 @@ public class EmployeeDAO {
 		}
 		
 		return employees;
+	}
+	
+	public int save(Connection conn, Employee employee) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = prop.getProperty("save");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, employee.getEmpName());
+			pstmt.setString(2, employee.getEmpNo());
+			pstmt.setString(3, employee.getEmail());
+			pstmt.setString(4, employee.getPhone());
+			pstmt.setString(5, employee.getJobCode());
+			pstmt.setString(6, employee.getSalLevel());
+			pstmt.setInt(7, employee.getSalary());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
 		
 	}
+	
 }
