@@ -11,6 +11,7 @@ public class EmployeeRun {
 		EmployeeView ev = new EmployeeView();
 		ev.mainMenu();
 		
+		
 	}
 
 }

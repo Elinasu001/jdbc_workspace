@@ -52,7 +52,6 @@ public class Employee {
 		super();
 		this.empId = empId;
 		this.empName = empName;
-		this.salary = salary;
 		this.deptTitle = deptTitle;
 		this.salary = salary;
 	}
@@ -66,17 +65,13 @@ public class Employee {
 		this.jobName = jobName;
 	}
 	
-	public Employee(String deptTitle, String deptId, String deptCode) {
-		this.deptTitle = deptTitle;
-		this.deptId = deptId;
+	public Employee(String empId, String empName, String deptCode) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
 		this.deptCode = deptCode;
-		
 	}
-//
-//	public Employee(String deptTitle) {
-//		this.deptTitle = deptTitle;
-//	}
-
+	
 	public String getDeptTitle() {
 		return deptTitle;
 	}

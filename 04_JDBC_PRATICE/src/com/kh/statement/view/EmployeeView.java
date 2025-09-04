@@ -30,7 +30,7 @@ public class EmployeeView {
 			switch(menuNo) {
 			case 1: findAll(); break;
 			case 2: findByDmtEmployee(); break;
-			case 3: break;
+			case 3: findByJobEmployee(); break;
 			case 4: break;
 			case 5: break;
 			case 6: break;
@@ -53,9 +53,9 @@ public class EmployeeView {
 			System.out.println("조회된 결과가 존재하지 않습니다.");
 		}else {
 			employees.stream().forEach(employee ->{
-				System.out.print("사번 : " + employee.getEmpId()+ ",");
-				System.out.print("사원명 : " + employee.getEmpName() + ",");
-				System.out.print("급여 : " + employee.getSalary() + ",");
+				System.out.print("사번 : " + employee.getEmpId()+ ", ");
+				System.out.print("사원명 : " + employee.getEmpName() + ", ");
+				System.out.print("급여 : " + employee.getSalary() + ", ");
 				System.out.print("직급명 : " + employee.getJobName());
 				System.out.println();
 			});
@@ -67,13 +67,37 @@ public class EmployeeView {
 		System.out.println("부서명을 입력해주세요 > ");
 		String deptTitle = sc.nextLine();
 		
-		Employee employee = ec.findByDmtEmployee(deptTitle);
+		List<Employee> employees = ec.findByDmtEmployee(deptTitle);
 		
 		
-		if(employee != null) {
-			System.out.println(deptTitle + "인 사람은" + employee.getEmpName() + "입니다.");
-		} else {
+		if(employees.isEmpty()) {
 			System.out.println("조회에 실패하셨습니다.");
+		} else {
+			employees.stream().forEach(employee ->{
+				System.out.print("사번 : " + employee.getEmpId()+ ", ");
+				System.out.print("\t사원명 : " + employee.getEmpName() + ", ");
+				System.out.print("\t부서코드 : " + employee.getDeptCode() + ", ");
+				System.out.println();
+			});
+		}
+		
+	}
+	
+	public void findByJobEmployee() {
+		
+		System.out.println("직급이 동일한 사원을 조회하는 서비스 입니다");
+		System.out.println("직급명을 입력해주세요 > ");
+		String jobName = sc.nextLine();
+		
+		List<Employee> employees = ec.findByJobEmployee(jobName);
+		
+		if(employees.isEmpty()) {
+			System.out.println("조회결과가 존재하지 않습니다.");
+		}else {
+			employees.stream().forEach(employee -> {
+				System.out.print("사원명 : " + employee.getEmpName() + ", ");
+				System.out.println("직급명 : " + employee.getJobName());
+			});
 		}
 		
 	}

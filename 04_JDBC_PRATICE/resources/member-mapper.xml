@@ -25,8 +25,10 @@
 	</entry>
 	
 	<entry key="findByDmtEmployee">
-		SELECT
-		       EMP_NAME
+		SELECT	
+			   EMP_ID
+		     , EMP_NAME
+		     , DEPT_CODE
 		  FROM
 		       EMPLOYEE
 		  JOIN
@@ -37,7 +39,8 @@
 	
 	<entry key="findByJobEmployee">
 		SELECT
-		       EMP_NAME
+			   JOB_NAME
+		     , EMP_NAME
 		  FROM
 		       EMPLOYEE 
 		  JOIN

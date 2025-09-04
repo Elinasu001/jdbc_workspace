@@ -35,11 +35,13 @@ public class EmployeeService {
 	}
 	
 	
-	public Employee findByDmtEmployee(String deptTitle) {
+	public List<Employee> findByDmtEmployee(String deptTitle) {
 		
 		return executeQuery(conn -> new EmployeeDAO().findByDmtEmployee(conn, deptTitle));
 	}
 	
-	
+	public List<Employee> findByJobEmployee(String jobName){
+		return executeQuery(conn -> new EmployeeDAO().findByJobEmployee(conn, jobName));
+	}
 	
 }

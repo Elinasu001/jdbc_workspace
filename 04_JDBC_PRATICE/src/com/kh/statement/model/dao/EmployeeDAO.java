@@ -59,9 +59,9 @@ public class EmployeeDAO {
 	}
 	
 	
-	public Employee findByDmtEmployee(Connection conn, String deptTitle) {
+	public List<Employee> findByDmtEmployee(Connection conn, String deptTitle) {
 		
-		Employee employee = null;
+		List<Employee> employees = new ArrayList();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
@@ -71,11 +71,43 @@ public class EmployeeDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, deptTitle);
 			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
-				employee = new Employee(rset.getString("DEPT_CODE")
-									   ,rset.getString("DEPT_ID")
-									   ,rset.getString("DEPT_TITLE"));
+			while (rset.next()) {
+				/*
+				Employee names = new Employee();        
+				names.setEmpName(rset.getString("EMP_NAME"));
+	            employees.add(names);
+	            */
+				employees.add(new Employee(rset.getString("EMP_ID")
+						                  ,rset.getString("EMP_NAME")
+						                  ,rset.getString("DEPT_CODE")));
+	            
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return employees;
+	}
+	
+	
+	public List<Employee> findByJobEmployee(Connection conn, String jobName){
+		List<Employee> employees = new ArrayList();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("findByJobEmployee");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, jobName);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Employee employee = new Employee();
+				employee.setJobName(rset.getString("JOB_NAME"));
+				employee.setEmpName(rset.getString("EMP_NAME"));
+				employees.add(employee);
 			}
 			
 		} catch (SQLException e) {
@@ -84,9 +116,10 @@ public class EmployeeDAO {
 			close(rset);
 			close(pstmt);
 		}
-		return employee;
+		
+		return employees;
+		
 	}
-	
 	
 	
 }
