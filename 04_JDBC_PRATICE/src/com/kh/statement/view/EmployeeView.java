@@ -31,7 +31,7 @@ public class EmployeeView {
 			case 1: findAll(); break;
 			case 2: findByDmtEmployee(); break;
 			case 3: findByJobEmployee(); break;
-			case 4: break;
+			case 4: findAllDetail(); break;
 			case 5: break;
 			case 6: break;
 			case 7: break;
@@ -99,7 +99,36 @@ public class EmployeeView {
 				System.out.println("직급명 : " + employee.getJobName());
 			});
 		}
+	}
+	
+	public void findAllDetail() {
+		System.out.println("\n상세 조회 서비스입니다.");
+		System.out.println("사번을 입력해주세요 > ");
+		String empId = sc.nextLine();
 		
+		List<Employee> employees = ec.findAllDetail(empId);
+		
+		if(employees.isEmpty()) {
+			System.out.println("조회결과가 존재하지 않습니다.");
+		} else {
+			employees.stream().forEach(e -> {
+				System.out.println("사원번호 : " + e.getEmpId());
+				System.out.println("직원명 : " + e.getEmpName());
+				System.out.println("주민등록번호 : " + e.getEmpNo());
+				System.out.println("이메일 : " + e.getEmail());
+				System.out.println("전화번호 : " + e.getPhone());
+				System.out.println("부서코드 : " + e.getDeptCode());
+				System.out.println("직급코드 : " + e.getJobCode());
+				System.out.println("급여등급 : " + e.getSalLevel());
+				System.out.println("급여 : " + e.getSalary());
+				System.out.println("보너스율 : " + e.getBonus());
+				System.out.println("관리자사번 : " + e.getManagerId());
+				System.out.println("입사일 : " + e.getHireDate());
+				System.out.println("퇴사일 : " + e.getEntDate());
+				System.out.println("재직여부 : " + e.getEntYn());
+			});
+
+		}
 	}
 	
 }

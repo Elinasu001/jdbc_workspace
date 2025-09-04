@@ -48,6 +48,8 @@ public class Employee {
 	}
 	
 	
+	
+	
 	public Employee(String empId, String empName, String deptTitle, int salary) {
 		super();
 		this.empId = empId;
@@ -72,6 +74,9 @@ public class Employee {
 		this.deptCode = deptCode;
 	}
 	
+	
+
+
 	public String getDeptTitle() {
 		return deptTitle;
 	}

@@ -67,8 +67,6 @@
 			 , ENT_YN
 		  FROM 
 		       EMPLOYEE
-		  JOIN
-		       DEPARTMENT ON ( DEPT_CODE = DEPT_ID)
 		 WHERE
 		 	   EMP_ID = ?
 	</entry>

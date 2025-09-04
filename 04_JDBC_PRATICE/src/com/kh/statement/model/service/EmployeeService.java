@@ -44,4 +44,8 @@ public class EmployeeService {
 		return executeQuery(conn -> new EmployeeDAO().findByJobEmployee(conn, jobName));
 	}
 	
+	public List<Employee> findAllDetail(String empId){
+		return executeQuery(conn -> new EmployeeDAO().findAllDetail(conn, empId));
+	}
+	
 }

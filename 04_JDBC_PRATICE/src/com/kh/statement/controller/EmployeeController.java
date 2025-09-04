@@ -25,4 +25,9 @@ public class EmployeeController {
 		return employees;
 	}
 	
+	public List<Employee> findAllDetail(String empId){
+		List<Employee> employees = new EmployeeService().findAllDetail(empId);
+		return employees;
+	}
+	
 }

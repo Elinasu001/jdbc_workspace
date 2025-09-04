@@ -121,5 +121,42 @@ public class EmployeeDAO {
 		
 	}
 	
-	
+	public List<Employee> findAllDetail(Connection conn, String empId){
+		List<Employee> employees = new ArrayList();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllDetail");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, empId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Employee employee = new Employee(rset.getString("EMP_ID")
+							                  ,rset.getString("EMP_NAME")
+							                  ,rset.getString("EMP_NO")
+							                  ,rset.getString("EMAIL")
+							                  ,rset.getString("PHONE")
+							                  ,rset.getString("DEPT_CODE")
+							                  ,rset.getString("JOB_CODE")
+							                  ,rset.getString("SAL_LEVEL")
+							                  ,rset.getInt("SALARY")
+							                  ,rset.getInt("BONUS")
+							                  ,rset.getString("MANAGER_ID")
+							                  ,rset.getString("HIRE_DATE")
+							                  ,rset.getString("ENT_DATE")
+							                  ,rset.getString("ENT_YN"));
+					employees.add(employee);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return employees;
+		
+	}
 }
