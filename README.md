@@ -39,6 +39,7 @@ JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
 ---
 
 03_JDB_Template
+  - Service 파일 확장
   - JDBC 관련 중복 코드 제거
 
 ---
