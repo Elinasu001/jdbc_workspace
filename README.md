@@ -28,13 +28,13 @@ JDBC + MVC
   - 
 JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
 
-<img width="320" height="auto" alt="jdbc_procedure_v2" src="https://github.com/user-attachments/assets/932e28ec-36cc-4313-ad46-2a6a93d22313" />
+<img width="370" height="auto" alt="jdbc_procedure_v2" src="https://github.com/user-attachments/assets/932e28ec-36cc-4313-ad46-2a6a93d22313" />
 
 ---
 
 02_JDBC_PreparedStatment
 
-<img width="320" height="auto" alt="41111111111" src="https://github.com/user-attachments/assets/5df6a8ad-1f8b-406b-a769-36236da1c5b2" />
+<img width="370" height="auto" alt="41111111111" src="https://github.com/user-attachments/assets/5df6a8ad-1f8b-406b-a769-36236da1c5b2" />
 
 ---
 
@@ -42,7 +42,8 @@ JDBC Statement 사용시 JDBC 절차  ⭐⭐⭐⭐⭐
 
 ---
 04_JDBC
-<img width="320" height="auto" alt="jdbc" src="https://github.com/user-attachments/assets/d813eecf-363a-4637-98c0-7c4bebff6ee4" />
+
+<img width="370" height="auto" alt="jdbc" src="https://github.com/user-attachments/assets/d813eecf-363a-4637-98c0-7c4bebff6ee4" />
 
 
 
