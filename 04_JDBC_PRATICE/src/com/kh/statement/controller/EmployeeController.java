@@ -30,6 +30,16 @@ public class EmployeeController {
 		return employees;
 	}
 	
+	public List<Employee> getHighSalaryEmployees(){
+		List<Employee> employees = new EmployeeService().getHighSalaryEmployees();
+		return employees;
+	}
+	
+	public List<Employee> getLowSalaryEmployees(){
+		List<Employee> employees = new EmployeeService().getLowSalaryEmployees();
+		return employees;
+	}
+	
 	public int save(String empName, String empNo, String email, String phone, String jobCode, String salLevel, int salary) {
 		Employee employee = new Employee(empName, empNo, email, phone, jobCode, salLevel, salary);
 		int result = new EmployeeService().save(employee);
@@ -41,5 +51,8 @@ public class EmployeeController {
 		int result = new EmployeeService().update(ed);
 		return result;
 	}
+	
+	
+	
 	
 }

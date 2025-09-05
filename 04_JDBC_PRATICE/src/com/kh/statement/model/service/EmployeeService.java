@@ -51,6 +51,14 @@ public class EmployeeService {
 		return executeQuery(conn -> new EmployeeDAO().findAllDetail(conn, empId));
 	}
 	
+	public List<Employee> getHighSalaryEmployees(){
+		return executeQuery(conn -> new EmployeeDAO().getHighSalaryEmployees(conn));
+	}
+	
+	public List<Employee> getLowSalaryEmployees(){
+		return executeQuery(conn -> new EmployeeDAO().getLowSalaryEmployees(conn));
+	}
+	
 	public int save(Employee employee) {
 		
 		int result = new EmployeeDAO().save(conn, employee);
@@ -76,5 +84,6 @@ public class EmployeeService {
 		return result;
 		
 	}
+	
 
 }

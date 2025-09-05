@@ -161,6 +161,64 @@ public class EmployeeDAO {
 		return employees;
 	}
 	
+	public List<Employee> getHighSalaryEmployees(Connection conn){
+		List<Employee> employees = new ArrayList();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("getHighSalaryEmployees");
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Employee employee = new Employee();
+				employee.setEmpName(rset.getString("EMP_NAME"));
+				employee.setSalary(rset.getInt("SALARY"));
+				employees.add(employee);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return employees;
+	}
+	
+	public List<Employee> getLowSalaryEmployees(Connection conn){
+		List<Employee> employees = new ArrayList();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("getLowSalaryEmployees");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Employee employee = new Employee();
+				employee.setEmpName(rset.getString("EMP_NAME"));
+				employee.setSalary(rset.getInt("SALARY"));
+				employees.add(employee);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return employees;
+		
+	}
+	
+	
 	public int save(Connection conn, Employee employee) {
 		PreparedStatement pstmt = null;
 		int result = 0;

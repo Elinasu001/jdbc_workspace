@@ -32,7 +32,7 @@ public class EmployeeView {
 			case 2: findByDmtEmployee(); break;
 			case 3: findByJobEmployee(); break;
 			case 4: findAllDetail(); break;
-			case 5: break;
+			case 5: getHighSalaryEmployees(); break;
 			case 6: break;
 			case 7: save(); break;
 			case 8: update(); break;
@@ -132,24 +132,36 @@ public class EmployeeView {
 		}
 	}
 	
-//	private void getHighSalaryEmployees() {
-//		
-//		System.out.println("\n급여가 높은 상위 다섯명 조회하는 프로그램입니다.");
-//		
-//		List<Employee> employees = ec.getHighSalaryEmployees();
-//		
-//		if(employees.isEmpty) {
-//			System.out.println("조회 결과에 실패하셨습니다.");
-//		}else {
-//			employees.stream().forEach(e-> {
-//				System.out.println(+ e.getEmpName() + " : " + e.getSalary());
-//				
-//				
-//			});
-//		
-//		}
-//		
-//	}
+	private void getHighSalaryEmployees() {
+		
+		System.out.println("\n급여가 높은 상위 다섯명을 조회하는 프로그램입니다.");
+		
+		List<Employee> employees = ec.getHighSalaryEmployees();
+		
+		if(employees.isEmpty()) {
+			System.out.println("조회 결과에 실패하셨습니다.");
+		}else {
+			employees.stream().forEach(e-> {
+				System.out.println(e.getEmpName() + " : " + e.getSalary());
+			});
+		
+		}
+		
+	}
+	
+	private void getLowSalaryEmployees() {
+		System.out.println("\n급여가 낮은 다섯명을 조회하는 프로그램입니다.");
+		
+		List<Employee> employees = ec.getLowSalaryEmployees();
+		
+		if(employees.isEmpty()) {
+			System.out.println("조회 결과에 실패하셨습니다.");
+		} else {
+			employees.stream().forEach(e -> {
+				System.out.println(e.getEmpName() +  " : " + e.getSalary());
+			});
+		}
+	}
 	
 	private void save() {
 		System.out.println();

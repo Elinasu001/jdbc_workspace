@@ -105,7 +105,7 @@
 			   SALARY IS NOT NULL
 		 ORDER
 		    BY
-		       SALARY 
+		       SALARY ASC
 		OFFSET 0 ROWS FETCH NEXT 5 ROWS ONLY
 	</entry>
 	
