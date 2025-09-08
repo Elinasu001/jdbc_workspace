@@ -10,6 +10,7 @@ import com.kh.statement.model.dto.PasswordDTO;
 import com.kh.statement.model.vo.Member;
 
 public class MemberService {
+	
 	private MemberDao memberDao = new MemberDao();
 	
 	public int save(Member member) {
