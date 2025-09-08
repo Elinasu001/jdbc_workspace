@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+
+	<!-- 중복되는 sql이 있을 경우 -->
+	<sql id="boardColumn">
+		SELECT
+		       BOARD_NO boardNo
+		     , BOARD_TITLE boardTitle
+		     , BOARD_CONTENT boardContent
+		     , USERID boardWriter
+		     , CREATE_DATE createDate
+  		  FROM
+  		  	   BOARD
+  		  JOIN
+		       MEMBER ON (USERNO = BOARD_WRITER)
+		 WHERE
+		       DELETE_YN = 'N'
+	</sql>
+	
+	
+	
+	<!-- auto mapping 하려면?  별칭 , userId를 boardWriter에 담고 싶으면 별칭으로 해준다.-->
+	<select id="selectBoardList"
+			resultType="board">
+		<include refid="boardColumn"/>
+		 ORDER
+		    BY
+		       BOARD_NO DESC
+	</select>
+	
+		
+	<select id="selectBoard" 
+			parameterType="_int"
+			resultType="board">
+		<include refid="boardColumn"/>
+		   AND
+		       BOARD_NO = #{boardNo}
+	</select>
+		      
+</mapper>

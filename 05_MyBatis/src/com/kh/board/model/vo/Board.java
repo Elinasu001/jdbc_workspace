@@ -12,6 +12,11 @@ public class Board {
 	private Date createDate;		// CREATE_DATE DATE
 	private String deleteStatus;	// DELETE_STATUS CHAR(1)
 	
+	// 기본생성자
+	public Board() {
+		
+	}
+	
 	// 모든 필드에대한 매개변수 생성자 (기본생성자 x  x=> why? 불변을 지키기 위함)
 	public Board(int boardNo, String boardTitle, String boardContent, String boardWriter, Date createDate,
 			String deleteStatus) {

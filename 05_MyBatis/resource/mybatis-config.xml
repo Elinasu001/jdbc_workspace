@@ -13,6 +13,7 @@
 	<!-- typeAliases : VO / DTO 클래스들의 풀클래스명을 별칭으로 사용하기위해 등록하는 영역 -->
 	<typeAliases>
 		<typeAlias type="com.kh.statement.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.board.model.vo.Board" alias="board"/>
 	</typeAliases>
 	
 	
@@ -57,6 +58,7 @@
 	<!-- mappers : 실행할 SQL문을 기록해둔 mapper파일을 등록하는 영역 -->
 	<mappers>
 		<mapper resource="member-mapper.xml"/>
+		<mapper resource="board-mapper.xml"/>
 	</mappers>
 
 </configuration>

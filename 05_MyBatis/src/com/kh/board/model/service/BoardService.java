@@ -3,11 +3,15 @@ package com.kh.board.model.service;
 import java.sql.Connection;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.kh.board.model.dao.BoardDAO;
+import com.kh.board.model.dao.BoardRepository;
 import com.kh.board.model.dto.BoardDTO;
 import com.kh.board.model.vo.Board;
 import com.kh.common.JDBCTemplate;
-import com.kh.statement.model.dao.MemberDao;
+import com.kh.common.Template;
+import com.kh.statement.model.service.MemberService;
 import com.kh.statement.model.vo.Member;
 
 public class BoardService {
@@ -33,8 +37,9 @@ public class BoardService {
 		// 제목: 안녕하세요, 내용 : 반갑습니다, 아이디 : admin  ==> INSERT하기 전에 아이디가 있는지 봐야 하니 DAO 에서 SELECT 해야함
 		// 2. 인증 / 인가
 		///new BoardDAO().searchId(conn, bd.getBoardWriter()); 안됨 why? 아이디를 가지고 회원 조회 하는 건 이미 MemberDao에 만들어 놨음
-		Member member = new MemberDao().findById(conn, bd.getBoardWriter()); // 있으면 주소값 담기고 없으면 null 
+		//Member member = new MemberDao().findById(conn, bd.getBoardWriter()); // 있으면 주소값 담기고 없으면 null 
 		// ↑ bd.getBoardWriter() 안에 들어있는 "아이디(문자열)"로 MEMBER 테이블을 조회
+		Member member = new MemberService().findById(bd.getBoardWriter()); // 저기 SqlSession 쓰니 반납 안해도됨.
 		//있으면 Member 객체, 없으면 null
 		if(member != null) {					// ← 왜 꼭 != null?
 			int userNo = member.getUserNo();	// 	  null이면 getUserNo()에서 NPE 터짐
@@ -58,17 +63,27 @@ public class BoardService {
 		return result;
 	}
 	
+	// MyBatis
 	public List<Board> selectBoardList(){
 		
-		List<Board> boards = new BoardDAO().selectBoardList(conn);
+		/*List<Board> boards = new BoardDAO().selectBoardList(conn);
 		
 		new BoardDAO().outputHTML(conn);
 		
 		
-		JDBCTemplate.close(conn);
+		JDBCTemplate.close(conn);*/
+		
+		SqlSession session = Template.getSqlSession();
+		
+		List<Board> boards = new BoardRepository().selectBoardList(session);
+		
+		session.close();
 		
 		return boards;
 	}
+
+	
+	
 	
 	public Board selectBoard(int boardNo) {
 		
@@ -76,12 +91,21 @@ public class BoardService {
 		// DB가면 돈 듦... => if 조건절 사용하기.
 		
 		Board board = null;
-		
+		/*
 		if(boardNo > 0) {
 			board = new BoardDAO().selectBoard(conn, boardNo);
 		}
 		
 		JDBCTemplate.close(conn);
+		*/
+		
+		SqlSession session = Template.getSqlSession();
+		
+		if(boardNo > 0) {
+			board = new BoardRepository().selectBoard(session, boardNo);
+		}
+		
+		session.close();
 		
 		return board;
 	}
