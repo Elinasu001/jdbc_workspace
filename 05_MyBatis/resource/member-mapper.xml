@@ -146,7 +146,7 @@
 		       USERPWD = #{userPwd}
 	</update>
 	
-	<delete id="delete" parameterType="com.kh.statement.model.vo.Member">
+	<delete id="delete" parameterType="member">
 		DELETE
 			  FROM
 			       MEMBER
