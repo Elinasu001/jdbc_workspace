@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+ <!--
+  	XML에서 주석사용하는 방법!
+  	이 문서의 형식이 configuration(환경설정)임을 알려줌
+  	.dtd == 유효성검사를 해줌
+  	=> 최상위 부모요소가 반드시 configuration element
+ -->
+<configuration>
+	
+	<!-- typeAliases : VO / DTO 클래스들의 풀클래스명을 별칭으로 사용하기위해 등록하는 영역 -->
+	<typeAliases>
+		<typeAlias type="com.kh.statement.model.vo.Member" alias="member"/>
+	</typeAliases>
+	
+	
+	<!-- environments : MyBatis에서 연동할 DB의 정보들을 등록하는 영역 
+		각각의 DB정보는 environment 태그를 이용해서 등록할 수 있음
+		=> 꼭! default속성을 이용해서 "여러개"의 정보중 어떤 DB를 기본으로 사용할 것인지 지정해야 된다. 꼭꼭!!!
+	-->
+	<environments default="development">
+		<environment id="development">
+			<!--
+				* transactionManager : type이 필수 속성 JDBC와 MANAGED 중 하나를 선택할 수 있음
+				- JDBC : 트랜잭션을 개발자가 직접관리하겠다(수동 commit)
+				- MANAGED : 트랜잭션에 대해서 개발자가 아무런 영향도 끼치지 않겠다. (자동 commit)
+				  [당부간은 JDBC 사용, 나중에 MANAGED 사용할 예정]
+			-->
+			<transactionManager type="JDBC"> 
+			
+			</transactionManager>	
+			
+			<!-- 
+				* dataSource : type의 속성 POOLED와 UNPOOLED 중 하나를 선택할 수 있음(ConnectionPool)
+				ConnectionPool : Connection 객체를 담아두는 영역, 한 번 생성된 Connection을 재사용
+				
+				POOLED => ConnectionPool 사용. (미리 10 ~ 20 개를 만들어서 접속요청을 했을 때 던져줌 다쓰면 다시 받아옴 => 만약, 다른 사람들이 다 사용 시 접속의 기다림이 있을 수 있음) _ 복잡 및 요청 많을 경우 사용(일반적)
+				UNPOOLED=> ConnectionPool 사용 안함.(즉, 필요할 때마다 만들어서 사용할 거임 => 접속 시 시간이 걸림) _ 간단할 경우 사용
+				[당분간은 UNPOOLED 사용, 나중에 POOLED 사용할 예정]
+				
+				DataSource 객체의 필드에 값을 set하기 위해서는 setter메소드가 호출되는데,
+				XML파일상에서는 setter메소드를 호출해서 값을 대입하기 위해 property 라는 요소를 사용함.
+			-->	
+			<dataSource type="UNPOOLED"> <!-- frame -->
+				<!--원래는 JDBCTemplate에 작성 했던걸 MyBaties 여기에 작성-->
+				<!-- DataSource.setDriver("oracle.jdbc.driver.OracleDriver") -->
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@115.90.212.20:10000:XE"/>
+				<property name="username" value="PSH08"/>
+				<property name="password" value="PSH081234"/>
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- mappers : 실행할 SQL문을 기록해둔 mapper파일을 등록하는 영역 -->
+	<mappers>
+		<mapper resource="member-mapper.xml"/>
+	</mappers>
+
+</configuration>
