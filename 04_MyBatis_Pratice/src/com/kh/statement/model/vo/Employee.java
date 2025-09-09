@@ -21,15 +21,79 @@ public class Employee {
 	
 	private String deptId;
 	private String deptTitle;
+	
 	private String jobName;
 	
 	public Employee() {
 		super();
 	}
 	
+	/**
+	 * findAll();
+	 * @param empId
+	 * @param empName
+	 * @param salary
+	 * @param deptTitle
+	 * @param jobName
+	 */
+	public Employee(String empId, String empName, int salary, String deptTitle, String jobName) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
+		this.salary = salary;
+		this.deptTitle = deptTitle;
+		this.jobName = jobName;
+	}
+	
+	/**
+	 * findByDmtEmployee();
+	 * @param empId
+	 * @param empName
+	 * @param salary
+	 * @param deptTitle
+	 */
+	public Employee(String empId, String empName, int salary, String deptTitle) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
+		this.salary = salary;
+		this.deptTitle = deptTitle;
+	}
+	
+	
+	
+
+	/**
+	 * findByJobEmployee();
+	 * @param empName
+	 * @param jobCode
+	 * @param jobName
+	 */
+	public Employee(String empName, String jobCode, String jobName) {
+		super();
+		this.empName = empName;
+		this.jobCode = jobCode;
+		this.jobName = jobName;
+	}
+	
+	/**
+	 * findAllDetail();
+	 * @param empId
+	 * @param empName
+	 * @param empNo
+	 * @param email
+	 * @param phone
+	 * @param deptCode
+	 * @param jobCode
+	 * @param salLevel
+	 * @param salary
+	 * @param bonus
+	 * @param managerId
+	 * @param hireDate
+	 * @param entDate
+	 */
 	public Employee(String empId, String empName, String empNo, String email, String phone, String deptCode,
-			String jobCode, String salLevel, int salary, int bonus, String managerId, String hireDate, String entDate,
-			String entYn) {
+			String jobCode, String salLevel, int salary, int bonus, String managerId, String hireDate, String entDate) {
 		super();
 		this.empId = empId;
 		this.empName = empName;
@@ -44,11 +108,21 @@ public class Employee {
 		this.managerId = managerId;
 		this.hireDate = hireDate;
 		this.entDate = entDate;
-		this.entYn = entYn;
 	}
 	
-	public Employee(String empName, String empNo, String email, String phone,
-			String jobCode, String salLevel, int salary) {
+	
+
+	/**
+	 * save();
+	 * @param empName
+	 * @param empNo
+	 * @param email
+	 * @param phone
+	 * @param jobCode
+	 * @param salLevel
+	 * @param salary
+	 */
+	public Employee(String empName, String empNo, String email, String phone, String jobCode, String salLevel, int salary) {
 		super();
 		this.empName = empName;
 		this.empNo = empNo;
@@ -58,35 +132,15 @@ public class Employee {
 		this.salLevel = salLevel;
 		this.salary = salary;
 	}
-	
-	
-	public Employee(String empId, String empName, String deptTitle, int salary) {
-		super();
-		this.empId = empId;
-		this.empName = empName;
-		this.deptTitle = deptTitle;
-		this.salary = salary;
-	}
-	
-	public Employee(String empId, String empName, int salary, String deptTitle, String jobName) {
-		super();
-		this.empId = empId;
-		this.empName = empName;
-		this.salary = salary;
-		this.deptTitle = deptTitle;
-		this.jobName = jobName;
-	}
-	
-	public Employee(String empId, String empName, String deptTitle) {
-		super();
-		this.empId = empId;
-		this.empName = empName;
-		this.deptTitle = deptTitle;
-	}
-	
-	
 
-
+	public String getDeptId() {
+		return deptId;
+	}
+	
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+	
 	public String getDeptTitle() {
 		return deptTitle;
 	}

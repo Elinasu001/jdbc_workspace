@@ -33,10 +33,10 @@ public class EmployeeView {
 			case 3: findByJobEmployee(); break;
 			case 4: findAllDetail(); break;
 			case 5: getHighSalaryEmployees(); break;
-			case 6: break;
+			case 6: getLowSalaryEmployees(); break;
 			case 7: save(); break;
 			case 8: update(); break;
-			case 9: break;
+			case 9: delete(); break;
 			case 10: System.out.println("프로그램을 종료합니다."); return;
 			default: System.out.println("잘못된 메뉴 선택입니다.");
 			}
@@ -74,7 +74,7 @@ public class EmployeeView {
 		if(employees.isEmpty()) {
 			System.out.println("조회에 실패하셨습니다.");
 		} else {
-			employees.stream().forEach(employee ->{
+			employees.stream().forEach(employee -> {
 				System.out.print("사번 : " + employee.getEmpId()+ ", ");
 				System.out.print("\t사원명 : " + employee.getEmpName() + ", ");
 				System.out.print("\t부서명 : " + employee.getDeptTitle());
@@ -106,7 +106,8 @@ public class EmployeeView {
 	private void findAllDetail() {
 		System.out.println("\n상세 조회 서비스입니다.");
 		System.out.println("사번을 입력해주세요 > ");
-		String empId = sc.nextLine();
+		int empId = sc.nextInt();
+		sc.nextLine();
 		
 		List<Employee> employees = ec.findAllDetail(empId);
 		
@@ -167,13 +168,13 @@ public class EmployeeView {
 	private void save() {
 		System.out.println();
 	    System.out.println("=== 사원 추가 ===");
-
-	    System.out.print("사원명을 입력해주세요 > ");
+	    
+	    System.out.print("사원명 > ");
 	    String empName = sc.nextLine();
 
-	    System.out.print("주민등록번호 예: 990101-1234567) > ");
+	    System.out.print("주민등록번호 > ");
 	    String empNo = sc.nextLine();
-
+	    
 	    System.out.print("이메일 > ");
 	    String email = sc.nextLine();
 
@@ -203,17 +204,18 @@ public class EmployeeView {
 	
 	private void update() {
 		System.out.println("\n정보 수정 서비스 입니다.");
+		
 		System.out.println("사번을 입력해주세요 > ");
 		String empId = sc.nextLine();
 		
-		System.out.println("수정할 급여를 입력해주세요 > ");
+		System.out.println("변경 급여를 입력해주세요 > ");
 		int newSalary = sc.nextInt();
 		sc.nextLine();
 		
-		System.out.println("수정할 직급을 입력해주세요 > ");
+		System.out.println("변경 직급을 입력해주세요 > ");
 		String newJobName = sc.nextLine();
 		
-		System.out.println("수정할 부서를 입력해주세요 > ");
+		System.out.println("변경 부서를 입력해주세요 > ");
 		String newDeptTitle = sc.nextLine();
 		
 		int result = ec.update(empId, newSalary, newJobName, newDeptTitle);
@@ -223,6 +225,23 @@ public class EmployeeView {
 			System.out.println("사원번호 : " + empId + ", 급여 : " + newSalary + ", 직급 : " + newJobName + ", 부서 :" + newDeptTitle);
 		} else {
 			System.out.println("실패했습니다");
+		}
+		
+	}
+	
+	private void delete() {
+		
+		System.out.println("\n사원 삭제하는 서비스 입니다");
+		
+		System.out.println("삭제할 사원 번호를 입력해주요 > ");
+		String empId = sc.nextLine();
+		
+		int result = ec.delete(empId);
+		
+		if(result > 0) {
+			System.out.println("삭제에 성공했습니다.");
+		} else {
+			System.out.println("삭제에 실패했습니다.");
 		}
 		
 	}

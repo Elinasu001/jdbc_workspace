@@ -25,7 +25,7 @@ public class EmployeeController {
 		return employees;
 	}
 	
-	public List<Employee> findAllDetail(String empId){
+	public List<Employee> findAllDetail(int empId){
 		List<Employee> employees = new EmployeeService().findAllDetail(empId);
 		return employees;
 	}
@@ -49,6 +49,11 @@ public class EmployeeController {
 	public int update(String empId, int newSalary, String newJobName, String newDeptTitle) {
 		EmployeeDTO ed = new EmployeeDTO(empId, newSalary, newJobName, newDeptTitle);
 		int result = new EmployeeService().update(ed);
+		return result;
+	}
+
+	public int delete(String empId) {
+		int result = new EmployeeService().delete(empId);
 		return result;
 	}
 	

@@ -3,10 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
   
-<configuration>
+<configuration >
+
 	<typeAliases>
 		<typeAlias type="com.kh.statement.model.vo.Employee" alias="employee"/>
+		<typeAlias type="com.kh.statement.model.dto.EmployeeDTO" alias="employeedto"/>
 	</typeAliases>
+	
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC"/> 
